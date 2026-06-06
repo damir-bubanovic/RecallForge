@@ -1,10 +1,11 @@
-from PySide6.QtWidgets import QInputDialog, QMessageBox
+from PySide6.QtWidgets import QMessageBox
 
 from app.cards.card_loader import (
     CARD_ANSWER_ROLE,
     CARD_ID_ROLE,
     CARD_QUESTION_ROLE,
 )
+from app.dialogs.card_dialog import CardDialog
 
 from database.cards import create_card, delete_card, update_card
 
@@ -14,29 +15,18 @@ def add_card(parent, topic_id: int, reload_callback):
         QMessageBox.information(parent, "No Topic Selected", "Please select a topic first.")
         return
 
-    question, ok = QInputDialog.getMultiLineText(
-        parent,
-        "Add Card",
-        "Question:",
-    )
+    dialog = CardDialog(parent=parent, title="Add Card")
 
-    if not ok:
+    if not dialog.exec():
         return
 
-    answer, ok = QInputDialog.getMultiLineText(
-        parent,
-        "Add Card",
-        "Answer:",
-    )
-
-    if not ok:
-        return
+    data = dialog.get_data()
 
     try:
         create_card(
             topic_id=topic_id,
-            question_text=question,
-            answer_text=answer,
+            question_text=data["question_text"],
+            answer_text=data["answer_text"],
         )
         reload_callback()
     except Exception as error:
@@ -48,31 +38,23 @@ def edit_card(parent, item, reload_callback):
     current_question = item.data(CARD_QUESTION_ROLE)
     current_answer = item.data(CARD_ANSWER_ROLE)
 
-    new_question, ok = QInputDialog.getMultiLineText(
-        parent,
-        "Edit Card",
-        "Question:",
-        current_question,
+    dialog = CardDialog(
+        parent=parent,
+        title="Edit Card",
+        question_text=current_question,
+        answer_text=current_answer,
     )
 
-    if not ok:
+    if not dialog.exec():
         return
 
-    new_answer, ok = QInputDialog.getMultiLineText(
-        parent,
-        "Edit Card",
-        "Answer:",
-        current_answer,
-    )
-
-    if not ok:
-        return
+    data = dialog.get_data()
 
     try:
         update_card(
             card_id=card_id,
-            question_text=new_question,
-            answer_text=new_answer,
+            question_text=data["question_text"],
+            answer_text=data["answer_text"],
         )
         reload_callback()
     except Exception as error:
