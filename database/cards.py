@@ -2,7 +2,7 @@ from database.connection import get_connection
 
 
 def create_card(
-    subfolder_id: int,
+    topic_id: int,
     question_text: str,
     answer_text: str,
     question_image_path: str | None = None,
@@ -23,7 +23,7 @@ def create_card(
         cursor.execute(
             """
             INSERT INTO cards (
-                subfolder_id,
+                topic_id,
                 question_text,
                 answer_text,
                 question_image_path,
@@ -32,7 +32,7 @@ def create_card(
             VALUES (?, ?, ?, ?, ?)
             """,
             (
-                subfolder_id,
+                topic_id,
                 cleaned_question,
                 cleaned_answer,
                 question_image_path,
@@ -45,7 +45,7 @@ def create_card(
         return cursor.lastrowid
 
 
-def get_cards_by_subfolder(subfolder_id: int):
+def get_cards_by_topic(topic_id: int):
     with get_connection() as connection:
         cursor = connection.cursor()
 
@@ -53,7 +53,7 @@ def get_cards_by_subfolder(subfolder_id: int):
             """
             SELECT
                 id,
-                subfolder_id,
+                topic_id,
                 question_text,
                 answer_text,
                 question_image_path,
@@ -61,10 +61,10 @@ def get_cards_by_subfolder(subfolder_id: int):
                 created_at,
                 updated_at
             FROM cards
-            WHERE subfolder_id = ?
+            WHERE topic_id = ?
             ORDER BY id ASC
             """,
-            (subfolder_id,)
+            (topic_id,)
         )
 
         return cursor.fetchall()

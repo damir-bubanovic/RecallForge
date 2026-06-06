@@ -1,18 +1,18 @@
 from database.connection import get_connection
 
 
-def create_subfolder(subject_id: int, name: str):
+def create_topic(subject_id: int, name: str):
     cleaned_name = name.strip()
 
     if not cleaned_name:
-        raise ValueError("Subfolder name cannot be empty.")
+        raise ValueError("Topic name cannot be empty.")
 
     with get_connection() as connection:
         cursor = connection.cursor()
 
         cursor.execute(
             """
-            INSERT INTO subfolders (subject_id, name)
+            INSERT INTO topics (subject_id, name)
             VALUES (?, ?)
             """,
             (subject_id, cleaned_name)
@@ -23,14 +23,14 @@ def create_subfolder(subject_id: int, name: str):
         return cursor.lastrowid
 
 
-def get_subfolders_by_subject(subject_id: int):
+def get_topics_by_subject(subject_id: int):
     with get_connection() as connection:
         cursor = connection.cursor()
 
         cursor.execute(
             """
             SELECT id, subject_id, name, created_at, updated_at
-            FROM subfolders
+            FROM topics
             WHERE subject_id = ?
             ORDER BY name ASC
             """,
@@ -40,23 +40,23 @@ def get_subfolders_by_subject(subject_id: int):
         return cursor.fetchall()
 
 
-def update_subfolder(subfolder_id: int, name: str):
+def update_topic(topic_id: int, name: str):
     cleaned_name = name.strip()
 
     if not cleaned_name:
-        raise ValueError("Subfolder name cannot be empty.")
+        raise ValueError("Topic name cannot be empty.")
 
     with get_connection() as connection:
         cursor = connection.cursor()
 
         cursor.execute(
             """
-            UPDATE subfolders
+            UPDATE topics
             SET name = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
             """,
-            (cleaned_name, subfolder_id)
+            (cleaned_name, topic_id)
         )
 
         connection.commit()
@@ -64,16 +64,16 @@ def update_subfolder(subfolder_id: int, name: str):
         return cursor.rowcount
 
 
-def delete_subfolder(subfolder_id: int):
+def delete_topic(topic_id: int):
     with get_connection() as connection:
         cursor = connection.cursor()
 
         cursor.execute(
             """
-            DELETE FROM subfolders
+            DELETE FROM topics
             WHERE id = ?
             """,
-            (subfolder_id,)
+            (topic_id,)
         )
 
         connection.commit()
