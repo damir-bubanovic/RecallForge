@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QHBoxLayout, QMainWindow, QWidget
 
-from app.card_panel import CardPanel
+from app.cards.card_panel import CardPanel
 from app.hierarchy.hierarchy_panel import HierarchyPanel
 
 
@@ -27,4 +27,4 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(central_widget)
 
-        self.hierarchy_panel.topic_selected_signal.connect(self.card_panel.load_cards)
+        self.hierarchy_panel.topic_selected_signal.connect(self.card_panel.load_cards_for_topic)
