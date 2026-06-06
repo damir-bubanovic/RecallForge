@@ -3,7 +3,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from app.main_window import MainWindow
-from database.db import initialize_database
+from database.db import initialize_database, create_subject, get_subjects
 
 
 def main():
