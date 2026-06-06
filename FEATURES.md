@@ -2,7 +2,7 @@
 
 ## Goal
 
-RecallForge is a desktop flashcard learning application focused on creating, organizing, and reviewing knowledge through a hierarchical structure of subjects, subfolders, and interactive question/answer cards.
+RecallForge is a desktop flashcard learning application focused on creating, organizing, and reviewing knowledge through a hierarchical structure of subjects, topics, and interactive question/answer cards.
 
 Built using:
 
@@ -14,35 +14,35 @@ Built using:
 
 # Current Development Phase
 
-RecallForge is currently in the foundation and architecture phase.
+RecallForge is currently in the foundation phase with database architecture completed.
 
 Current focus:
 
-* Build a stable desktop application foundation
-* Design the database architecture
-* Implement subject management
-* Implement subfolder management
-* Implement card management
-* Implement review mode
+* Expand the desktop application
+* Implement Topic management
+* Implement Card management
+* Implement Review mode
 * Support images inside cards
 * Keep the application fully offline and local-first
+* Maintain a clean and scalable architecture
 
 ---
 
-# Chapter 1: Desktop Application Foundation 🟡
+# Chapter 1: Desktop Application Foundation ✅
 
-## Planned
+## Implemented
 
 * Main application window
-* Application navigation
+* PySide6 desktop application setup
 * Window management
-* Consistent UI styling
-* Responsive desktop layout
-* Reusable UI components
+* Modular project structure
+* Subject panel integration
+* Reusable panel architecture
+* Clean separation between UI and database layers
 
 ---
 
-# Chapter 2: Subject Management 🔴
+# Chapter 2: Subject Management ✅
 
 ## Purpose
 
@@ -75,6 +75,15 @@ Examples:
 
 * Delete subject
 
+## Status
+
+### Implemented
+
+* Subject CRUD
+* Subject list display
+* Subject persistence through SQLite
+* Subject validation
+
 ## Future Possibilities
 
 * Subject icons
@@ -83,21 +92,21 @@ Examples:
 
 ---
 
-# Chapter 3: Subfolder Management 🔴
+# Chapter 3: Topic Management 🔴
 
 ## Purpose
 
-Each subject can contain multiple subfolders.
+Each subject can contain multiple topics.
 
 Example:
 
 History
 
-* 18th Century
 * French Revolution
 * Egyptians
 * Roman Empire
 * World War I
+* 18th Century
 
 Programming
 
@@ -110,25 +119,25 @@ Programming
 
 ### Create
 
-* Create subfolder inside subject
+* Create topic inside subject
 
 ### Read
 
-* View all subfolders
+* View all topics
 
 ### Update
 
-* Rename subfolder
+* Rename topic
 
 ### Delete
 
-* Delete subfolder
+* Delete topic
 
 ## Future Possibilities
 
-* Nested subfolders
-* Subfolder statistics
-* Subfolder icons
+* Nested topics
+* Topic statistics
+* Topic icons
 
 ---
 
@@ -138,7 +147,7 @@ Programming
 
 Cards are the core learning units of RecallForge.
 
-Each card belongs to a specific subfolder.
+Each card belongs to a specific topic.
 
 ## Card Structure
 
@@ -252,9 +261,9 @@ Database stores image file paths only.
 
 ---
 
-# Chapter 7: SQLite Database 🔴
+# Chapter 7: SQLite Database ✅
 
-## Planned Tables
+## Implemented Tables
 
 ### Subjects
 
@@ -263,7 +272,7 @@ Database stores image file paths only.
 * created_at
 * updated_at
 
-### Subfolders
+### Topics
 
 * id
 * subject_id
@@ -274,13 +283,31 @@ Database stores image file paths only.
 ### Cards
 
 * id
-* subfolder_id
+* topic_id
 * question_text
 * answer_text
 * question_image_path
 * answer_image_path
 * created_at
 * updated_at
+
+## Implemented Database Layer
+
+* connection.py
+* schema.py
+* subjects.py
+* topics.py
+* cards.py
+
+## Implemented Features
+
+* Automatic database creation
+* Automatic schema creation
+* Subject CRUD operations
+* Topic CRUD operations
+* Card CRUD operations
+* Foreign key relationships
+* SQLite persistence
 
 ---
 
@@ -291,7 +318,7 @@ Database stores image file paths only.
 Search through:
 
 * Subjects
-* Subfolders
+* Topics
 * Questions
 * Answers
 
@@ -330,7 +357,7 @@ Allow users to back up and transfer knowledge collections.
 ### Statistics
 
 * Total subjects
-* Total subfolders
+* Total topics
 * Total cards
 * Cards reviewed
 * Study sessions completed
@@ -368,10 +395,19 @@ RecallForge is designed to be:
 
 # Chapter 13: UI / UX 🔴
 
+## Implemented
+
+* Main desktop window
+* Subject panel
+* Subject CRUD interface
+
 ## Planned
 
-* Modern desktop interface
-* Clean navigation
+* Topic panel
+* Card panel
+* Review mode interface
+* Modern desktop styling
+* Improved navigation
 * Comfortable reading layout
 * Dark mode support
 * Light mode support
@@ -390,28 +426,81 @@ RecallForge Structure
 
 Subject
 
-└── Subfolder
+└── Topic
 
-    └── Card
+```
+└── Card
 
-        ├── Question
+    ├── Question
 
-        ├── Question Image (Optional)
+    ├── Question Image (Optional)
 
-        ├── Answer
+    ├── Answer
 
-        └── Answer Image (Optional)
+    └── Answer Image (Optional)
+```
+
+---
+
+# Current Project Structure
+
+RecallForge
+
+├── app/
+
+│   ├── main_window.py
+
+│   ├── subject_panel.py
+
+│   ├── topic_panel.py
+
+│   └── card_panel.py
+
+│
+
+├── database/
+
+│   ├── connection.py
+
+│   ├── schema.py
+
+│   ├── subjects.py
+
+│   ├── topics.py
+
+│   └── cards.py
+
+│
+
+├── data/
+
+├── assets/
+
+├── tests/
+
+│
+
+├── main.py
+
+├── FEATURES.md
+
+├── README.md
+
+└── requirements.txt
 
 ---
 
 # Version 0.1 Scope
 
-## Goals
+## Completed
 
-1. Launch desktop application
-2. Create SQLite database
-3. Subject CRUD
-4. Subfolder CRUD
+1. Launch desktop application ✔
+2. Create SQLite database ✔
+3. Subject CRUD ✔
+
+## Remaining
+
+4. Topic CRUD
 5. Card CRUD
 6. Review mode
 7. Image support
@@ -420,22 +509,22 @@ Subject
 
 # Recommended Development Order
 
-## Phase 1
+## Phase 1 ✅
 
 * Database schema
 * Database helper functions
 
-## Phase 2
+## Phase 2 ✅
 
-* Subject management
+* Subject CRUD
 
 ## Phase 3
 
-* Subfolder management
+* Topic CRUD
 
 ## Phase 4
 
-* Card management
+* Card CRUD
 
 ## Phase 5
 
@@ -451,12 +540,18 @@ Subject
 
 ## Phase 8
 
+* Statistics
+
+## Phase 9
+
 * Polish and optimization
 
 ---
 
 # Summary
 
-RecallForge is a local-first desktop learning application that organizes knowledge into subjects, subfolders, and interactive question/answer cards.
+RecallForge is a local-first desktop learning application that organizes knowledge into subjects, topics, and interactive question/answer cards.
 
 The initial goal is to create a complete offline flashcard system with image support, SQLite storage, and a clean PySide6 desktop experience.
+
+The current milestone has completed the desktop foundation, database architecture, and Subject CRUD system. The next milestone is Topic CRUD.
