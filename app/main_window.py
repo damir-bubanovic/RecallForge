@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QMainWindow, QVBoxLayout, QWidget
 
-from app.hierarchy_panel import HierarchyPanel
+from app.hierarchy.hierarchy_panel import HierarchyPanel
 
 
 class MainWindow(QMainWindow):
