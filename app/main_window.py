@@ -6,6 +6,7 @@ from app.preview.card_preview import CardPreview
 from app.search.search_panel import SearchPanel
 from app.import_export.exporter import export_to_json
 from app.import_export.importer import import_from_json
+from app.statistics.statistics_dialog import StatisticsDialog
 
 
 class MainWindow(QMainWindow):
@@ -53,6 +54,15 @@ class MainWindow(QMainWindow):
         import_action.triggered.connect(
             lambda: import_from_json(self, refresh_callback=self.refresh_after_import)
         )
+
+        tools_menu = menu_bar.addMenu("Tools")
+
+        statistics_action = tools_menu.addAction("Statistics")
+        statistics_action.triggered.connect(self.open_statistics_dialog)
+
+    def open_statistics_dialog(self):
+        dialog = StatisticsDialog(self)
+        dialog.exec()
 
     def refresh_after_import(self):
         self.hierarchy_panel.reload_hierarchy()
