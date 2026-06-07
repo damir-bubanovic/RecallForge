@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QLabel,
     QListWidget,
@@ -8,11 +8,17 @@ from PySide6.QtWidgets import (
 )
 
 from app.cards.card_actions import add_card
-from app.cards.card_loader import load_cards
+from app.cards.card_loader import (
+    CARD_ANSWER_ROLE,
+    CARD_QUESTION_ROLE,
+    load_cards,
+)
 from app.cards.card_menu import open_context_menu
 
 
 class CardPanel(QWidget):
+    card_selected_signal = Signal(str, str)
+
     def __init__(self):
         super().__init__()
 
@@ -43,6 +49,7 @@ class CardPanel(QWidget):
 
         self.add_button.clicked.connect(self.handle_add_card)
         self.card_list.customContextMenuRequested.connect(self.show_context_menu)
+        self.card_list.itemClicked.connect(self.handle_card_selected)
 
     def load_cards_for_topic(self, topic_id: int, topic_name: str):
         self.current_topic_id = topic_id
@@ -74,3 +81,9 @@ class CardPanel(QWidget):
             topic_id=self.current_topic_id,
             reload_callback=self.reload_cards,
         )
+
+    def handle_card_selected(self, item):
+        question = item.data(CARD_QUESTION_ROLE)
+        answer = item.data(CARD_ANSWER_ROLE)
+
+        self.card_selected_signal.emit(question, answer)
