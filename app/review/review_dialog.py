@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog,
+    QHBoxLayout,
     QLabel,
     QMessageBox,
     QPushButton,
@@ -22,7 +23,7 @@ class ReviewDialog(QDialog):
         self.showing_answer = False
 
         self.setWindowTitle(f"Review: {topic_name}")
-        self.setMinimumSize(700, 500)
+        self.setMinimumSize(750, 520)
 
         self.progress_label = QLabel()
         self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -32,8 +33,13 @@ class ReviewDialog(QDialog):
         self.card_text_label.setWordWrap(True)
         self.card_text_label.setStyleSheet("font-size: 26px;")
 
-        self.click_button = QPushButton("Show Answer")
-        self.click_button.setMinimumHeight(50)
+        self.show_answer_button = QPushButton("Show Answer")
+        self.show_answer_button.setMinimumHeight(50)
+
+        self.again_button = QPushButton("Again")
+        self.hard_button = QPushButton("Hard")
+        self.good_button = QPushButton("Good")
+        self.easy_button = QPushButton("Easy")
 
         self.setup_ui()
         self.load_current_question()
@@ -41,13 +47,31 @@ class ReviewDialog(QDialog):
     def setup_ui(self):
         layout = QVBoxLayout()
 
+        rating_layout = QHBoxLayout()
+        rating_layout.addWidget(self.again_button)
+        rating_layout.addWidget(self.hard_button)
+        rating_layout.addWidget(self.good_button)
+        rating_layout.addWidget(self.easy_button)
+
         layout.addWidget(self.progress_label)
         layout.addWidget(self.card_text_label)
-        layout.addWidget(self.click_button)
+        layout.addWidget(self.show_answer_button)
+        layout.addLayout(rating_layout)
 
         self.setLayout(layout)
 
-        self.click_button.clicked.connect(self.handle_click)
+        self.show_answer_button.clicked.connect(self.show_answer)
+
+        self.again_button.clicked.connect(self.rate_again)
+        self.hard_button.clicked.connect(self.rate_hard)
+        self.good_button.clicked.connect(self.rate_good)
+        self.easy_button.clicked.connect(self.rate_easy)
+
+    def set_rating_buttons_visible(self, visible: bool):
+        self.again_button.setVisible(visible)
+        self.hard_button.setVisible(visible)
+        self.good_button.setVisible(visible)
+        self.easy_button.setVisible(visible)
 
     def load_current_question(self):
         if not self.cards:
@@ -66,14 +90,18 @@ class ReviewDialog(QDialog):
             f"Card {self.current_index + 1} of {len(self.cards)}"
         )
         self.card_text_label.setText(card["question_text"])
-        self.click_button.setText("Show Answer")
+
+        self.show_answer_button.setVisible(True)
+        self.set_rating_buttons_visible(False)
 
     def show_answer(self):
         card = self.cards[self.current_index]
 
         self.showing_answer = True
         self.card_text_label.setText(card["answer_text"])
-        self.click_button.setText("Next Question")
+
+        self.show_answer_button.setVisible(False)
+        self.set_rating_buttons_visible(True)
 
     def move_to_next_card(self):
         self.current_index += 1
@@ -84,12 +112,21 @@ class ReviewDialog(QDialog):
                 "Review Complete",
                 "You reviewed all cards in this topic.",
             )
-            self.current_index = 0
+            self.accept()
+            return
 
         self.load_current_question()
 
-    def handle_click(self):
-        if not self.showing_answer:
-            self.show_answer()
-        else:
-            self.move_to_next_card()
+    def rate_again(self):
+        current_card = self.cards[self.current_index]
+        self.cards.append(current_card)
+        self.move_to_next_card()
+
+    def rate_hard(self):
+        self.move_to_next_card()
+
+    def rate_good(self):
+        self.move_to_next_card()
+
+    def rate_easy(self):
+        self.move_to_next_card()
