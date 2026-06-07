@@ -478,10 +478,10 @@ RecallForge
 7. Review Mode ✔
 8. Image Support ✔
 9. Search System ✔
+10. Import / Export ✔
 
 ## Remaining
 
-10. Import / Export
 11. Statistics
 12. Spaced Repetition Engine
 
@@ -522,7 +522,7 @@ RecallForge
 
 * Search System
 
-## Phase 9
+## Phase 9 ✅
 
 * Import / Export
 
