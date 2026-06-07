@@ -55,8 +55,5 @@ data/*.db
 # Python cache folders
 */__pycache__/
 
-# PyCharm
-.idea/
-
 # Local application data
-data/*.db
+data/images/
