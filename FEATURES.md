@@ -18,12 +18,12 @@ RecallForge is currently in the core functionality phase.
 
 Current focus:
 
-* Improve review mode
-* Add image support
-* Add card statistics
-* Add import/export functionality
+* Import / Export system
+* Statistics system
+* Review history
+* Spaced repetition engine
+* UI polish and optimization
 * Maintain a clean and scalable architecture
-* Prepare for future spaced repetition features
 
 ---
 
@@ -38,6 +38,7 @@ Current focus:
 * Reusable panel architecture
 * Clean separation between UI and database layers
 * Context menu based workflow
+* Reusable widget architecture
 
 ---
 
@@ -95,41 +96,6 @@ Examples:
 
 Each subject can contain multiple topics.
 
-Example:
-
-History
-
-* French Revolution
-* Egyptians
-* Roman Empire
-* World War I
-* 18th Century
-
-Programming
-
-* Python
-* Java
-* Databases
-* Algorithms
-
-## CRUD Features
-
-### Create
-
-* Create topic inside subject
-
-### Read
-
-* View all topics
-
-### Update
-
-* Rename topic
-
-### Delete
-
-* Delete topic
-
 ## Implemented
 
 * Topic CRUD
@@ -164,24 +130,6 @@ Each card belongs to a specific topic.
 
 * Answer text
 * Optional answer image
-
-## CRUD Features
-
-### Create
-
-* Create card
-
-### Read
-
-* View cards
-
-### Update
-
-* Edit card
-
-### Delete
-
-* Delete card
 
 ## Implemented
 
@@ -222,10 +170,6 @@ User chooses:
 * Good
 * Easy
 
-Next question appears.
-
-Continue until all cards have been reviewed.
-
 ## Implemented Features
 
 * One card at a time
@@ -253,7 +197,7 @@ Continue until all cards have been reviewed.
 
 * Move to next card
 
-## Planned Future Enhancements
+## Future Enhancements
 
 * True spaced repetition
 * Review statistics
@@ -263,21 +207,11 @@ Continue until all cards have been reviewed.
 
 ---
 
-# Chapter 6: Image Support 🔴
+# Chapter 6: Image Support ✅
 
 ## Purpose
 
 Allow visual learning.
-
-## Supported Locations
-
-### Question Side
-
-* Image support
-
-### Answer Side
-
-* Image support
 
 ## Supported Formats
 
@@ -285,24 +219,24 @@ Allow visual learning.
 * JPG
 * JPEG
 * WEBP
+* SVG
 
-## Storage Strategy
+## Implemented
 
-Images stored locally.
-
-Database stores image file paths only.
-
-## Planned Integration
-
-* Card Dialog
-* Card Preview
-* Review Mode
+* Image selection in Card Dialog
+* Local image storage
+* SQLite image path persistence
+* Card Preview image display
+* Review Mode image display
+* Reusable ImageViewer widget
+* SVG support
 
 ## Future Possibilities
 
 * Multiple images per card
 * Image zoom
 * Drag-and-drop image support
+* Full-screen image viewer
 
 ---
 
@@ -336,14 +270,6 @@ Database stores image file paths only.
 * created_at
 * updated_at
 
-## Implemented Database Layer
-
-* connection.py
-* schema.py
-* subjects.py
-* topics.py
-* cards.py
-
 ## Implemented Features
 
 * Automatic database creation
@@ -356,22 +282,30 @@ Database stores image file paths only.
 
 ---
 
-# Chapter 8: Search System 🔴
+# Chapter 8: Search System ✅
 
-## Planned
+## Implemented
 
 Search through:
 
 * Subjects
 * Topics
-* Questions
-* Answers
+* Question text
+* Answer text
 
 ## Features
 
 * Real-time search
 * Case-insensitive matching
-* Fast SQLite search
+* SQLite powered search
+* Unified search results
+* Topic navigation from search results
+
+## Future Improvements
+
+* Auto-open selected cards
+* Search highlighting
+* Advanced filters
 
 ---
 
@@ -399,8 +333,6 @@ Allow users to back up and transfer knowledge collections.
 
 ## Planned
 
-### Statistics
-
 * Total subjects
 * Total topics
 * Total cards
@@ -419,13 +351,6 @@ RecallForge is designed to be:
 * Local-only
 * Private
 * User-controlled
-
-## No Requirements For
-
-* Accounts
-* Internet connection
-* Cloud services
-* Subscriptions
 
 ---
 
@@ -446,15 +371,17 @@ RecallForge is designed to be:
 
 * Main desktop window
 * Hierarchy tree panel
+* Search panel
 * Subject and Topic management
 * Card list panel
 * Card preview panel
 * Review dialog
 * Context menu workflow
+* ImageViewer widget
+* SVG image rendering
 
 ## Planned
 
-* Image display support
 * Modern desktop styling
 * Improved navigation
 * Comfortable reading layout
@@ -475,30 +402,12 @@ RecallForge is designed to be:
 
 Implement a learning system inspired by Anki.
 
-## Planned Rating System
-
-### Again
-
-* Failed recall
-* Review again soon
-
-### Hard
-
-* Difficult recall
-* Short review interval
-
-### Good
-
-* Normal recall
-* Standard review interval
-
-### Easy
-
-* Instant recall
-* Long review interval
-
 ## Planned Features
 
+* Again
+* Hard
+* Good
+* Easy
 * Review intervals
 * Due cards
 * Learning stages
@@ -513,20 +422,12 @@ Implement a learning system inspired by Anki.
 RecallForge Structure
 
 Subject
-
 └── Topic
-
-```
-└── Card
-
-    ├── Question
-
-    ├── Question Image (Optional)
-
-    ├── Answer
-
-    └── Answer Image (Optional)
-```
+    └── Card
+        ├── Question
+        ├── Question Image (Optional)
+        ├── Answer
+        └── Answer Image (Optional)
 
 ---
 
@@ -535,81 +436,31 @@ Subject
 RecallForge
 
 ├── app/
-
-│   ├── dialogs/
-
-│   │   └── card_dialog.py
-
-│   │
-
-│   ├── hierarchy/
-
-│   │   ├── hierarchy_panel.py
-
-│   │   ├── hierarchy_loader.py
-
-│   │   ├── hierarchy_menu.py
-
-│   │   └── hierarchy_actions.py
-
-│   │
-
 │   ├── cards/
-
-│   │   ├── card_panel.py
-
-│   │   ├── card_loader.py
-
-│   │   ├── card_menu.py
-
-│   │   └── card_actions.py
-
-│   │
-
+│   ├── dialogs/
+│   ├── hierarchy/
 │   ├── preview/
-
-│   │   └── card_preview.py
-
-│   │
-
 │   ├── review/
-
-│   │   └── review_dialog.py
-
-│   │
-
+│   ├── search/
+│   ├── utils/
+│   ├── widgets/
 │   └── main_window.py
-
 │
-
 ├── database/
-
 │   ├── connection.py
-
 │   ├── schema.py
-
 │   ├── subjects.py
-
 │   ├── topics.py
-
-│   └── cards.py
-
+│   ├── cards.py
+│   └── search.py
 │
-
 ├── data/
-
 ├── assets/
-
 ├── tests/
-
 │
-
 ├── main.py
-
 ├── FEATURES.md
-
 ├── README.md
-
 └── requirements.txt
 
 ---
@@ -625,13 +476,14 @@ RecallForge
 5. Card CRUD ✔
 6. Card Preview ✔
 7. Review Mode ✔
+8. Image Support ✔
+9. Search System ✔
 
 ## Remaining
 
-8. Image support
-9. Search
-10. Import/Export
+10. Import / Export
 11. Statistics
+12. Spaced Repetition Engine
 
 ---
 
@@ -662,11 +514,11 @@ RecallForge
 
 * Review Mode
 
-## Phase 7
+## Phase 7 ✅
 
 * Image Support
 
-## Phase 8
+## Phase 8 ✅
 
 * Search System
 
@@ -690,8 +542,6 @@ RecallForge
 
 # Summary
 
-RecallForge is a local-first desktop learning application that organizes knowledge into subjects, topics, and interactive question/answer cards.
+RecallForge currently supports full subject management, topic management, card management, image-enhanced flashcards, card previewing, topic-based review sessions, and integrated search functionality.
 
-The application currently supports full subject, topic, and card management, card previewing, and topic-based review sessions with Anki-style rating buttons.
-
-The next milestone is image support, followed by search, import/export, statistics, and a true spaced repetition engine.
+The next milestone is Import / Export, followed by Statistics and a full Spaced Repetition Engine inspired by Anki.
