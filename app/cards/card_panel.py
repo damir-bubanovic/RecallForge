@@ -14,6 +14,8 @@ from app.cards.card_loader import (
     load_cards,
 )
 from app.cards.card_menu import open_context_menu
+from app.review.review_dialog import ReviewDialog
+
 
 
 class CardPanel(QWidget):
@@ -34,6 +36,7 @@ class CardPanel(QWidget):
         self.card_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         self.add_button = QPushButton("Add Card")
+        self.review_button = QPushButton("Start Review")
 
         self.setup_ui()
 
@@ -44,10 +47,12 @@ class CardPanel(QWidget):
         layout.addWidget(self.help_label)
         layout.addWidget(self.card_list)
         layout.addWidget(self.add_button)
+        layout.addWidget(self.review_button)
 
         self.setLayout(layout)
 
         self.add_button.clicked.connect(self.handle_add_card)
+        self.review_button.clicked.connect(self.start_review)
         self.card_list.customContextMenuRequested.connect(self.show_context_menu)
         self.card_list.itemClicked.connect(self.handle_card_selected)
 
@@ -87,3 +92,14 @@ class CardPanel(QWidget):
         answer = item.data(CARD_ANSWER_ROLE)
 
         self.card_selected_signal.emit(question, answer)
+
+    def start_review(self):
+        if self.current_topic_id is None:
+            return
+
+        dialog = ReviewDialog(
+            parent=self,
+            topic_id=self.current_topic_id,
+            topic_name=self.current_topic_name,
+        )
+        dialog.exec()
