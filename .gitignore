@@ -8,6 +8,7 @@ ENV/
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # Distribution / packaging
 build/
@@ -42,6 +43,7 @@ Thumbs.db
 # SQLite databases
 *.sqlite3
 *.db
+data/*.db
 
 # Environment variables
 .env
@@ -49,3 +51,12 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.bak
+
+# Python cache folders
+*/__pycache__/
+
+# PyCharm
+.idea/
+
+# Local application data
+data/*.db
