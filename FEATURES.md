@@ -14,17 +14,16 @@ Built using:
 
 # Current Development Phase
 
-RecallForge is currently in the foundation phase with database architecture completed.
+RecallForge is currently in the core functionality phase.
 
 Current focus:
 
-* Expand the desktop application
-* Implement Topic management
-* Implement Card management
-* Implement Review mode
-* Support images inside cards
-* Keep the application fully offline and local-first
+* Improve review mode
+* Add image support
+* Add card statistics
+* Add import/export functionality
 * Maintain a clean and scalable architecture
+* Prepare for future spaced repetition features
 
 ---
 
@@ -36,9 +35,9 @@ Current focus:
 * PySide6 desktop application setup
 * Window management
 * Modular project structure
-* Subject panel integration
 * Reusable panel architecture
 * Clean separation between UI and database layers
+* Context menu based workflow
 
 ---
 
@@ -75,14 +74,12 @@ Examples:
 
 * Delete subject
 
-## Status
-
-### Implemented
+## Implemented
 
 * Subject CRUD
-* Subject list display
 * Subject persistence through SQLite
 * Subject validation
+* Context menu actions
 
 ## Future Possibilities
 
@@ -92,7 +89,7 @@ Examples:
 
 ---
 
-# Chapter 3: Topic Management 🔴
+# Chapter 3: Topic Management ✅
 
 ## Purpose
 
@@ -133,6 +130,13 @@ Programming
 
 * Delete topic
 
+## Implemented
+
+* Topic CRUD
+* Topic hierarchy
+* Topic persistence through SQLite
+* Context menu actions
+
 ## Future Possibilities
 
 * Nested topics
@@ -141,7 +145,7 @@ Programming
 
 ---
 
-# Chapter 4: Card Management 🔴
+# Chapter 4: Card Management ✅
 
 ## Purpose
 
@@ -179,6 +183,14 @@ Each card belongs to a specific topic.
 
 * Delete card
 
+## Implemented
+
+* Card CRUD
+* Reusable CardDialog
+* Card list panel
+* Card preview panel
+* Context menu actions
+
 ## Future Possibilities
 
 * Tags
@@ -189,38 +201,65 @@ Each card belongs to a specific topic.
 
 ---
 
-# Chapter 5: Review Mode 🔴
+# Chapter 5: Review Mode ✅
 
 ## Purpose
 
 Review cards interactively.
 
-## Review Flow
+## Current Review Flow
 
 Question appears.
 
-User clicks.
+User clicks **Show Answer**.
 
 Answer appears.
 
-User clicks again.
+User chooses:
+
+* Again
+* Hard
+* Good
+* Easy
 
 Next question appears.
 
-User clicks.
-
-Answer appears.
-
 Continue until all cards have been reviewed.
 
-## Planned Features
+## Implemented Features
 
 * One card at a time
 * Question display
 * Answer reveal
-* Automatic progression
-* End-of-session summary
-* Restart review session
+* Topic-based review sessions
+* Review completion message
+* Anki-style rating buttons
+
+## Current Rating Behavior
+
+### Again
+
+* Card is added back into the current review session
+
+### Hard
+
+* Move to next card
+
+### Good
+
+* Move to next card
+
+### Easy
+
+* Move to next card
+
+## Planned Future Enhancements
+
+* True spaced repetition
+* Review statistics
+* Review history
+* Learning intervals
+* Due card scheduling
 
 ---
 
@@ -252,6 +291,12 @@ Allow visual learning.
 Images stored locally.
 
 Database stores image file paths only.
+
+## Planned Integration
+
+* Card Dialog
+* Card Preview
+* Review Mode
 
 ## Future Possibilities
 
@@ -361,6 +406,8 @@ Allow users to back up and transfer knowledge collections.
 * Total cards
 * Cards reviewed
 * Study sessions completed
+* Learning progress
+* Review history
 
 ---
 
@@ -393,19 +440,21 @@ RecallForge is designed to be:
 
 ---
 
-# Chapter 13: UI / UX 🔴
+# Chapter 13: UI / UX 🟡
 
 ## Implemented
 
 * Main desktop window
-* Subject panel
-* Subject CRUD interface
+* Hierarchy tree panel
+* Subject and Topic management
+* Card list panel
+* Card preview panel
+* Review dialog
+* Context menu workflow
 
 ## Planned
 
-* Topic panel
-* Card panel
-* Review mode interface
+* Image display support
 * Modern desktop styling
 * Improved navigation
 * Comfortable reading layout
@@ -417,6 +466,45 @@ RecallForge is designed to be:
 * Custom themes
 * Font size controls
 * Accessibility improvements
+
+---
+
+# Chapter 14: Spaced Repetition System 🔴
+
+## Purpose
+
+Implement a learning system inspired by Anki.
+
+## Planned Rating System
+
+### Again
+
+* Failed recall
+* Review again soon
+
+### Hard
+
+* Difficult recall
+* Short review interval
+
+### Good
+
+* Normal recall
+* Standard review interval
+
+### Easy
+
+* Instant recall
+* Long review interval
+
+## Planned Features
+
+* Review intervals
+* Due cards
+* Learning stages
+* Ease factor
+* Review history
+* Scheduling engine
 
 ---
 
@@ -448,13 +536,49 @@ RecallForge
 
 ├── app/
 
-│   ├── main_window.py
+│   ├── dialogs/
 
-│   ├── subject_panel.py
+│   │   └── card_dialog.py
 
-│   ├── topic_panel.py
+│   │
 
-│   └── card_panel.py
+│   ├── hierarchy/
+
+│   │   ├── hierarchy_panel.py
+
+│   │   ├── hierarchy_loader.py
+
+│   │   ├── hierarchy_menu.py
+
+│   │   └── hierarchy_actions.py
+
+│   │
+
+│   ├── cards/
+
+│   │   ├── card_panel.py
+
+│   │   ├── card_loader.py
+
+│   │   ├── card_menu.py
+
+│   │   └── card_actions.py
+
+│   │
+
+│   ├── preview/
+
+│   │   └── card_preview.py
+
+│   │
+
+│   ├── review/
+
+│   │   └── review_dialog.py
+
+│   │
+
+│   └── main_window.py
 
 │
 
@@ -497,13 +621,17 @@ RecallForge
 1. Launch desktop application ✔
 2. Create SQLite database ✔
 3. Subject CRUD ✔
+4. Topic CRUD ✔
+5. Card CRUD ✔
+6. Card Preview ✔
+7. Review Mode ✔
 
 ## Remaining
 
-4. Topic CRUD
-5. Card CRUD
-6. Review mode
-7. Image support
+8. Image support
+9. Search
+10. Import/Export
+11. Statistics
 
 ---
 
@@ -518,31 +646,43 @@ RecallForge
 
 * Subject CRUD
 
-## Phase 3
+## Phase 3 ✅
 
 * Topic CRUD
 
-## Phase 4
+## Phase 4 ✅
 
 * Card CRUD
 
-## Phase 5
+## Phase 5 ✅
 
-* Review mode
+* Card Preview
 
-## Phase 6
+## Phase 6 ✅
 
-* Image support
+* Review Mode
 
 ## Phase 7
 
-* Search system
+* Image Support
 
 ## Phase 8
 
-* Statistics
+* Search System
 
 ## Phase 9
+
+* Import / Export
+
+## Phase 10
+
+* Statistics
+
+## Phase 11
+
+* Spaced Repetition Engine
+
+## Phase 12
 
 * Polish and optimization
 
@@ -552,6 +692,6 @@ RecallForge
 
 RecallForge is a local-first desktop learning application that organizes knowledge into subjects, topics, and interactive question/answer cards.
 
-The initial goal is to create a complete offline flashcard system with image support, SQLite storage, and a clean PySide6 desktop experience.
+The application currently supports full subject, topic, and card management, card previewing, and topic-based review sessions with Anki-style rating buttons.
 
-The current milestone has completed the desktop foundation, database architecture, and Subject CRUD system. The next milestone is Topic CRUD.
+The next milestone is image support, followed by search, import/export, statistics, and a true spaced repetition engine.

@@ -9,7 +9,9 @@ from PySide6.QtWidgets import (
 
 from app.cards.card_actions import add_card
 from app.cards.card_loader import (
+    CARD_ANSWER_IMAGE_ROLE,
     CARD_ANSWER_ROLE,
+    CARD_QUESTION_IMAGE_ROLE,
     CARD_QUESTION_ROLE,
     load_cards,
 )
@@ -19,7 +21,7 @@ from app.review.review_dialog import ReviewDialog
 
 
 class CardPanel(QWidget):
-    card_selected_signal = Signal(str, str)
+    card_selected_signal = Signal(str, str, object, object)
 
     def __init__(self):
         super().__init__()
@@ -90,8 +92,15 @@ class CardPanel(QWidget):
     def handle_card_selected(self, item):
         question = item.data(CARD_QUESTION_ROLE)
         answer = item.data(CARD_ANSWER_ROLE)
+        question_image_path = item.data(CARD_QUESTION_IMAGE_ROLE)
+        answer_image_path = item.data(CARD_ANSWER_IMAGE_ROLE)
 
-        self.card_selected_signal.emit(question, answer)
+        self.card_selected_signal.emit(
+            question,
+            answer,
+            question_image_path,
+            answer_image_path,
+        )
 
     def start_review(self):
         if self.current_topic_id is None:
