@@ -1,18 +1,14 @@
-from pathlib import Path
-
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap
-from PySide6.QtSvgWidgets import QSvgWidget
 from PySide6.QtWidgets import (
     QDialog,
     QHBoxLayout,
     QLabel,
     QMessageBox,
     QPushButton,
-    QSizePolicy,
     QVBoxLayout,
 )
 
+from app.widgets.image_viewer import ImageViewer
 from database.cards import get_cards_by_topic
 
 
@@ -38,15 +34,7 @@ class ReviewDialog(QDialog):
         self.card_text_label.setWordWrap(True)
         self.card_text_label.setStyleSheet("font-size: 26px;")
 
-        self.image_label = QLabel()
-        self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.svg_widget = QSvgWidget()
-        self.svg_widget.setFixedSize(420, 260)
-        self.svg_widget.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Fixed,
-        )
+        self.image_viewer = ImageViewer(width=420, height=260)
 
         self.show_answer_button = QPushButton("Show Answer")
         self.show_answer_button.setMinimumHeight(50)
@@ -70,8 +58,7 @@ class ReviewDialog(QDialog):
 
         layout.addWidget(self.progress_label)
         layout.addWidget(self.card_text_label)
-        layout.addWidget(self.image_label)
-        layout.addWidget(self.svg_widget)
+        layout.addWidget(self.image_viewer)
         layout.addWidget(self.show_answer_button)
         layout.addLayout(rating_layout)
 
@@ -106,9 +93,9 @@ class ReviewDialog(QDialog):
         self.progress_label.setText(
             f"Card {self.current_index + 1} of {len(self.cards)}"
         )
-        self.card_text_label.setText(card["question_text"])
 
-        self.display_image(card["question_image_path"])
+        self.card_text_label.setText(card["question_text"])
+        self.image_viewer.show_image(card["question_image_path"])
 
         self.show_answer_button.setVisible(True)
         self.set_rating_buttons_visible(False)
@@ -117,45 +104,12 @@ class ReviewDialog(QDialog):
         card = self.cards[self.current_index]
 
         self.showing_answer = True
-        self.card_text_label.setText(card["answer_text"])
 
-        self.display_image(card["answer_image_path"])
+        self.card_text_label.setText(card["answer_text"])
+        self.image_viewer.show_image(card["answer_image_path"])
 
         self.show_answer_button.setVisible(False)
         self.set_rating_buttons_visible(True)
-
-    def display_image(self, image_path):
-        self.image_label.clear()
-        self.image_label.hide()
-        self.svg_widget.hide()
-
-        if not image_path:
-            return
-
-        path = Path(image_path)
-
-        if not path.exists():
-            return
-
-        if path.suffix.lower() == ".svg":
-            self.svg_widget.load(str(path))
-            self.svg_widget.show()
-            return
-
-        pixmap = QPixmap(str(path))
-
-        if pixmap.isNull():
-            return
-
-        scaled_pixmap = pixmap.scaled(
-            420,
-            260,
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
-
-        self.image_label.setPixmap(scaled_pixmap)
-        self.image_label.show()
 
     def move_to_next_card(self):
         self.current_index += 1

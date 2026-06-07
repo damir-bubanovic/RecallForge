@@ -1,9 +1,6 @@
-from pathlib import Path
+from PySide6.QtWidgets import QLabel, QTextEdit, QVBoxLayout, QWidget
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap
-from PySide6.QtSvgWidgets import QSvgWidget
-from PySide6.QtWidgets import QLabel, QSizePolicy, QTextEdit, QVBoxLayout, QWidget
+from app.widgets.image_viewer import ImageViewer
 
 
 class CardPreview(QWidget):
@@ -19,15 +16,7 @@ class CardPreview(QWidget):
         self.question_text = QTextEdit()
         self.question_text.setReadOnly(True)
 
-        self.question_image_label = QLabel()
-        self.question_image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.question_svg_widget = QSvgWidget()
-        self.question_svg_widget.setFixedSize(300, 180)
-        self.question_svg_widget.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Fixed,
-        )
+        self.question_image_viewer = ImageViewer(width=300, height=180)
 
         self.answer_label = QLabel("Answer")
         self.answer_label.setStyleSheet("font-size: 16px; font-weight: bold;")
@@ -35,15 +24,7 @@ class CardPreview(QWidget):
         self.answer_text = QTextEdit()
         self.answer_text.setReadOnly(True)
 
-        self.answer_image_label = QLabel()
-        self.answer_image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.answer_svg_widget = QSvgWidget()
-        self.answer_svg_widget.setFixedSize(300, 180)
-        self.answer_svg_widget.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Fixed,
-        )
+        self.answer_image_viewer = ImageViewer(width=300, height=180)
 
         self.setup_ui()
         self.clear_preview()
@@ -55,13 +36,11 @@ class CardPreview(QWidget):
 
         layout.addWidget(self.question_label)
         layout.addWidget(self.question_text)
-        layout.addWidget(self.question_image_label)
-        layout.addWidget(self.question_svg_widget)
+        layout.addWidget(self.question_image_viewer)
 
         layout.addWidget(self.answer_label)
         layout.addWidget(self.answer_text)
-        layout.addWidget(self.answer_image_label)
-        layout.addWidget(self.answer_svg_widget)
+        layout.addWidget(self.answer_image_viewer)
 
         self.setLayout(layout)
 
@@ -75,61 +54,12 @@ class CardPreview(QWidget):
         self.question_text.setPlainText(question)
         self.answer_text.setPlainText(answer)
 
-        self.display_image(
-            image_path=question_image_path,
-            image_label=self.question_image_label,
-            svg_widget=self.question_svg_widget,
-        )
-
-        self.display_image(
-            image_path=answer_image_path,
-            image_label=self.answer_image_label,
-            svg_widget=self.answer_svg_widget,
-        )
-
-    @staticmethod
-    def display_image(image_path, image_label, svg_widget):
-        image_label.clear()
-        image_label.hide()
-        svg_widget.hide()
-
-        if not image_path:
-            return
-
-        path = Path(image_path)
-
-        if not path.exists():
-            return
-
-        if path.suffix.lower() == ".svg":
-            svg_widget.load(str(path))
-            svg_widget.show()
-            return
-
-        pixmap = QPixmap(str(path))
-
-        if pixmap.isNull():
-            return
-
-        scaled_pixmap = pixmap.scaled(
-            300,
-            180,
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
-
-        image_label.setPixmap(scaled_pixmap)
-        image_label.show()
+        self.question_image_viewer.show_image(question_image_path)
+        self.answer_image_viewer.show_image(answer_image_path)
 
     def clear_preview(self):
         self.question_text.setPlainText("")
         self.answer_text.setPlainText("")
 
-        self.question_image_label.clear()
-        self.answer_image_label.clear()
-
-        self.question_image_label.hide()
-        self.answer_image_label.hide()
-
-        self.question_svg_widget.hide()
-        self.answer_svg_widget.hide()
+        self.question_image_viewer.clear()
+        self.answer_image_viewer.clear()
