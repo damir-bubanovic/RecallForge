@@ -5,6 +5,7 @@ from app.hierarchy.hierarchy_panel import HierarchyPanel
 from app.preview.card_preview import CardPreview
 from app.search.search_panel import SearchPanel
 from app.import_export.exporter import export_to_json
+from app.import_export.importer import import_from_json
 
 
 class MainWindow(QMainWindow):
@@ -47,3 +48,13 @@ class MainWindow(QMainWindow):
 
         export_action = file_menu.addAction("Export")
         export_action.triggered.connect(lambda: export_to_json(self))
+
+        import_action = file_menu.addAction("Import")
+        import_action.triggered.connect(
+            lambda: import_from_json(self, refresh_callback=self.refresh_after_import)
+        )
+
+    def refresh_after_import(self):
+        self.hierarchy_panel.reload_hierarchy()
+        self.card_panel.load_cards_for_topic(None, "")
+        self.card_preview.clear_preview()
