@@ -51,19 +51,23 @@ class SearchPanel(QWidget):
         results = search_all(text)
 
         for result in results:
-            result_type = result["result_type"]
-            title = result["title"]
-            subtitle = result["subtitle"]
-            topic_id = result["topic_id"]
-
-            display_text = self.format_result_text(result_type, title, subtitle)
-
-            item = QListWidgetItem(display_text)
-            item.setData(RESULT_TYPE_ROLE, result_type)
-            item.setData(RESULT_ID_ROLE, result["result_id"])
-            item.setData(RESULT_TOPIC_ID_ROLE, topic_id)
-
+            item = self.create_result_item(result)
             self.results_list.addItem(item)
+
+    def create_result_item(self, result):
+        result_type = result["result_type"]
+        title = result["title"]
+        subtitle = result["subtitle"]
+        topic_id = result["topic_id"]
+
+        display_text = self.format_result_text(result_type, title, subtitle)
+
+        item = QListWidgetItem(display_text)
+        item.setData(RESULT_TYPE_ROLE, result_type)
+        item.setData(RESULT_ID_ROLE, result["result_id"])
+        item.setData(RESULT_TOPIC_ID_ROLE, topic_id)
+
+        return item
 
     @staticmethod
     def format_result_text(result_type: str, title: str, subtitle: str | None):
