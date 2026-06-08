@@ -104,6 +104,7 @@ def get_largest_topic_card_count():
         row = cursor.fetchone()
         return row["total"] if row else 0
 
+
 def get_top_topics(limit: int = 5):
     with get_connection() as connection:
         cursor = connection.cursor()
@@ -124,6 +125,7 @@ def get_top_topics(limit: int = 5):
         )
 
         return cursor.fetchall()
+
 
 def get_top_subjects(limit: int = 5):
     with get_connection() as connection:
@@ -148,6 +150,35 @@ def get_top_subjects(limit: int = 5):
 
         return cursor.fetchall()
 
+def get_total_reviews():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM review_history
+        """)
+
+        row = cursor.fetchone()
+        return row["total"]
+
+
+def get_review_count_by_rating(rating: str):
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT COUNT(*) AS total
+            FROM review_history
+            WHERE rating = ?
+            """,
+            (rating,)
+        )
+
+        row = cursor.fetchone()
+        return row["total"]
+
 def get_basic_statistics():
     return {
         "total_subjects": get_total_subjects(),
@@ -159,4 +190,9 @@ def get_basic_statistics():
         "largest_topic_card_count": get_largest_topic_card_count(),
         "top_topics": get_top_topics(),
         "top_subjects": get_top_subjects(),
+        "total_reviews": get_total_reviews(),
+        "again_reviews": get_review_count_by_rating("Again"),
+        "hard_reviews": get_review_count_by_rating("Hard"),
+        "good_reviews": get_review_count_by_rating("Good"),
+        "easy_reviews": get_review_count_by_rating("Easy"),
     }

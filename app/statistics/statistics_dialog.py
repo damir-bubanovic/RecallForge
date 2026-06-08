@@ -75,6 +75,32 @@ class StatisticsDialog(QDialog):
                 )
             )
 
+        layout.addSpacing(10)
+
+        reviews_label = QLabel("Review Statistics")
+        reviews_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(reviews_label)
+
+        layout.addWidget(
+            QLabel(f"Total Reviews: {stats['total_reviews']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Again Reviews: {stats['again_reviews']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Hard Reviews: {stats['hard_reviews']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Good Reviews: {stats['good_reviews']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Easy Reviews: {stats['easy_reviews']}")
+        )
+
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.accept)
 

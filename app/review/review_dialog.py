@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
 
 from app.widgets.image_viewer import ImageViewer
 from database.cards import get_cards_by_topic
+from database.reviews import create_review
 
 
 class ReviewDialog(QDialog):
@@ -127,14 +128,25 @@ class ReviewDialog(QDialog):
 
     def rate_again(self):
         current_card = self.cards[self.current_index]
+        create_review(current_card["id"], "Again")
+
         self.cards.append(current_card)
         self.move_to_next_card()
 
     def rate_hard(self):
+        current_card = self.cards[self.current_index]
+        create_review(current_card["id"], "Hard")
+
         self.move_to_next_card()
 
     def rate_good(self):
+        current_card = self.cards[self.current_index]
+        create_review(current_card["id"], "Good")
+
         self.move_to_next_card()
 
     def rate_easy(self):
+        current_card = self.cards[self.current_index]
+        create_review(current_card["id"], "Easy")
+
         self.move_to_next_card()
