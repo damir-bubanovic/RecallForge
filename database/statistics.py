@@ -55,10 +55,62 @@ def get_total_cards_with_images():
         return row["total"]
 
 
+def get_total_cards_without_images():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM cards
+            WHERE question_image_path IS NULL
+              AND answer_image_path IS NULL
+        """)
+
+        row = cursor.fetchone()
+        return row["total"]
+
+
+def get_average_cards_per_topic():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT
+                CASE
+                    WHEN COUNT(DISTINCT topics.id) = 0 THEN 0
+                    ELSE ROUND(CAST(COUNT(cards.id) AS REAL) / COUNT(DISTINCT topics.id), 2)
+                END AS average_cards
+            FROM topics
+            LEFT JOIN cards ON cards.topic_id = topics.id
+        """)
+
+        row = cursor.fetchone()
+        return row["average_cards"]
+
+
+def get_largest_topic_card_count():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT COUNT(cards.id) AS total
+            FROM topics
+            LEFT JOIN cards ON cards.topic_id = topics.id
+            GROUP BY topics.id
+            ORDER BY total DESC
+            LIMIT 1
+        """)
+
+        row = cursor.fetchone()
+        return row["total"] if row else 0
+
 def get_basic_statistics():
     return {
         "total_subjects": get_total_subjects(),
         "total_topics": get_total_topics(),
         "total_cards": get_total_cards(),
         "total_cards_with_images": get_total_cards_with_images(),
+        "total_cards_without_images": get_total_cards_without_images(),
+        "average_cards_per_topic": get_average_cards_per_topic(),
+        "largest_topic_card_count": get_largest_topic_card_count(),
     }

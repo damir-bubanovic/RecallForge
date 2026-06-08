@@ -37,6 +37,18 @@ class StatisticsDialog(QDialog):
             )
         )
 
+        layout.addWidget(
+            QLabel(f"Cards Without Images: {stats['total_cards_without_images']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Average Cards Per Topic: {stats['average_cards_per_topic']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Largest Topic Card Count: {stats['largest_topic_card_count']}")
+        )
+
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.accept)
 
