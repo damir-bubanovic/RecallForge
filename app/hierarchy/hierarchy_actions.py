@@ -6,17 +6,24 @@ from database.subjects import create_subject, delete_subject, update_subject
 from database.topics import create_topic, delete_topic, update_topic
 
 
+def run_action(parent, action, reload_callback):
+    try:
+        action()
+        reload_callback()
+    except Exception as error:
+        QMessageBox.warning(parent, "Error", str(error))
+
 def add_subject(parent, reload_callback):
     name, ok = QInputDialog.getText(parent, "Add Subject", "Subject name:")
 
     if not ok:
         return
 
-    try:
-        create_subject(name)
-        reload_callback()
-    except Exception as error:
-        QMessageBox.warning(parent, "Error", str(error))
+    run_action(
+        parent,
+        lambda: create_subject(name),
+        reload_callback,
+    )
 
 
 def rename_subject(parent, item, reload_callback):
@@ -33,11 +40,11 @@ def rename_subject(parent, item, reload_callback):
     if not ok:
         return
 
-    try:
-        update_subject(subject_id, new_name)
-        reload_callback()
-    except Exception as error:
-        QMessageBox.warning(parent, "Error", str(error))
+    run_action(
+        parent,
+        lambda: update_subject(subject_id, new_name),
+        reload_callback,
+    )
 
 
 def remove_subject(parent, item, reload_callback):
@@ -53,11 +60,11 @@ def remove_subject(parent, item, reload_callback):
     if confirmation != QMessageBox.StandardButton.Yes:
         return
 
-    try:
-        delete_subject(subject_id)
-        reload_callback()
-    except Exception as error:
-        QMessageBox.warning(parent, "Error", str(error))
+    run_action(
+        parent,
+        lambda: delete_subject(subject_id),
+        reload_callback,
+    )
 
 
 def add_topic(parent, subject_item, reload_callback):
@@ -68,11 +75,11 @@ def add_topic(parent, subject_item, reload_callback):
     if not ok:
         return
 
-    try:
-        create_topic(subject_id, name)
-        reload_callback()
-    except Exception as error:
-        QMessageBox.warning(parent, "Error", str(error))
+    run_action(
+        parent,
+        lambda: create_topic(subject_id, name),
+        reload_callback,
+    )
 
 
 def rename_topic(parent, item, reload_callback):
@@ -89,11 +96,11 @@ def rename_topic(parent, item, reload_callback):
     if not ok:
         return
 
-    try:
-        update_topic(topic_id, new_name)
-        reload_callback()
-    except Exception as error:
-        QMessageBox.warning(parent, "Error", str(error))
+    run_action(
+        parent,
+        lambda: update_topic(topic_id, new_name),
+        reload_callback,
+    )
 
 
 def remove_topic(parent, item, reload_callback):
@@ -109,8 +116,8 @@ def remove_topic(parent, item, reload_callback):
     if confirmation != QMessageBox.StandardButton.Yes:
         return
 
-    try:
-        delete_topic(topic_id)
-        reload_callback()
-    except Exception as error:
-        QMessageBox.warning(parent, "Error", str(error))
+    run_action(
+        parent,
+        lambda: delete_topic(topic_id),
+        reload_callback,
+    )
