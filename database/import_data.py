@@ -7,6 +7,7 @@ def clear_all_data():
 
         cursor.execute("PRAGMA foreign_keys = ON")
 
+        cursor.execute("DELETE FROM review_history")
         cursor.execute("DELETE FROM cards")
         cursor.execute("DELETE FROM topics")
         cursor.execute("DELETE FROM subjects")
