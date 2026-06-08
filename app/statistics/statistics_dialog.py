@@ -13,7 +13,7 @@ class StatisticsDialog(QDialog):
         super().__init__(parent)
 
         self.setWindowTitle("Statistics")
-        self.setMinimumWidth(350)
+        self.setMinimumWidth(450)
 
         stats = get_basic_statistics()
 
@@ -48,6 +48,32 @@ class StatisticsDialog(QDialog):
         layout.addWidget(
             QLabel(f"Largest Topic Card Count: {stats['largest_topic_card_count']}")
         )
+
+        layout.addSpacing(10)
+
+        topics_label = QLabel("Top Topics")
+        topics_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(topics_label)
+
+        for topic in stats["top_topics"]:
+            layout.addWidget(
+                QLabel(
+                    f"{topic['topic_name']} ({topic['card_count']} cards)"
+                )
+            )
+
+        layout.addSpacing(10)
+
+        subjects_label = QLabel("Top Subjects")
+        subjects_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(subjects_label)
+
+        for subject in stats["top_subjects"]:
+            layout.addWidget(
+                QLabel(
+                    f"{subject['subject_name']} ({subject['card_count']} cards)"
+                )
+            )
 
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.accept)

@@ -104,6 +104,50 @@ def get_largest_topic_card_count():
         row = cursor.fetchone()
         return row["total"] if row else 0
 
+def get_top_topics(limit: int = 5):
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT
+                topics.name AS topic_name,
+                COUNT(cards.id) AS card_count
+            FROM topics
+            LEFT JOIN cards
+                ON cards.topic_id = topics.id
+            GROUP BY topics.id
+            ORDER BY card_count DESC, topics.name ASC
+            LIMIT ?
+            """,
+            (limit,)
+        )
+
+        return cursor.fetchall()
+
+def get_top_subjects(limit: int = 5):
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT
+                subjects.name AS subject_name,
+                COUNT(cards.id) AS card_count
+            FROM subjects
+            LEFT JOIN topics
+                ON topics.subject_id = subjects.id
+            LEFT JOIN cards
+                ON cards.topic_id = topics.id
+            GROUP BY subjects.id
+            ORDER BY card_count DESC, subjects.name ASC
+            LIMIT ?
+            """,
+            (limit,)
+        )
+
+        return cursor.fetchall()
+
 def get_basic_statistics():
     return {
         "total_subjects": get_total_subjects(),
@@ -113,4 +157,6 @@ def get_basic_statistics():
         "total_cards_without_images": get_total_cards_without_images(),
         "average_cards_per_topic": get_average_cards_per_topic(),
         "largest_topic_card_count": get_largest_topic_card_count(),
+        "top_topics": get_top_topics(),
+        "top_subjects": get_top_subjects(),
     }

@@ -18,7 +18,6 @@ RecallForge is currently in the core functionality phase.
 
 Current focus:
 
-* Import / Export system
 * Statistics system
 * Review history
 * Spaced repetition engine
@@ -309,9 +308,9 @@ Search through:
 
 ---
 
-# Chapter 9: Import & Export 🟡
+# Chapter 9: Import & Export ✅
 
-## Planned
+## Implemented
 
 ### Export
 
@@ -329,13 +328,22 @@ Allow users to back up and transfer knowledge collections.
 
 ---
 
-# Chapter 10: Statistics System 🟡
+# Chapter 10: Statistics System ✅
 
-## Planned
+## Implemented
 
 * Total subjects
 * Total topics
 * Total cards
+* Cards with images
+* Cards without images
+* Average cards per topic
+* Largest topic card count
+* Top topics by card count
+* Top subjects by card count
+
+## Future Enhancements
+
 * Cards reviewed
 * Study sessions completed
 * Learning progress
@@ -439,9 +447,11 @@ RecallForge
 │   ├── cards/
 │   ├── dialogs/
 │   ├── hierarchy/
+│   ├── import_export/
 │   ├── preview/
 │   ├── review/
 │   ├── search/
+│   ├── statistics/
 │   ├── utils/
 │   ├── widgets/
 │   └── main_window.py
@@ -452,7 +462,8 @@ RecallForge
 │   ├── subjects.py
 │   ├── topics.py
 │   ├── cards.py
-│   └── search.py
+│   ├── search.py
+│   └── statistics.py
 │
 ├── data/
 ├── assets/
@@ -479,10 +490,10 @@ RecallForge
 8. Image Support ✔
 9. Search System ✔
 10. Import / Export ✔
+11. Statistics ✔
 
 ## Remaining
 
-11. Statistics
 12. Spaced Repetition Engine
 
 ---
@@ -526,7 +537,7 @@ RecallForge
 
 * Import / Export
 
-## Phase 10
+## Phase 10 ✅
 
 * Statistics
 
@@ -542,6 +553,6 @@ RecallForge
 
 # Summary
 
-RecallForge currently supports full subject management, topic management, card management, image-enhanced flashcards, card previewing, topic-based review sessions, and integrated search functionality.
+RecallForge currently supports full subject management, topic management, card management, image-enhanced flashcards, card previewing, topic-based review sessions, integrated search functionality, import/export, and basic statistics.
 
-The next milestone is Import / Export, followed by Statistics and a full Spaced Repetition Engine inspired by Anki.
+The next milestone is a full Spaced Repetition Engine inspired by Anki, followed by data safety improvements and UI polish.
