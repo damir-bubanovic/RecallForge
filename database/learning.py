@@ -40,3 +40,27 @@ def get_card_learning_strength(card_id: int):
             return "Strong"
 
         return "Familiar"
+
+def get_all_card_strengths():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT id
+            FROM cards
+        """)
+
+        cards = cursor.fetchall()
+
+    strengths = {
+        "New": 0,
+        "Weak": 0,
+        "Familiar": 0,
+        "Strong": 0,
+    }
+
+    for card in cards:
+        strength = get_card_learning_strength(card["id"])
+        strengths[strength] += 1
+
+    return strengths

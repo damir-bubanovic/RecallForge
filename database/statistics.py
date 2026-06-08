@@ -1,4 +1,5 @@
 from database.connection import get_connection
+from database.learning import get_all_card_strengths
 
 
 def get_total_subjects():
@@ -224,4 +225,5 @@ def get_basic_statistics():
         "easy_reviews": get_review_count_by_rating("Easy"),
         "reviews_today": get_reviews_today(),
         "reviews_this_week": get_reviews_this_week(),
+        "learning_strengths": get_all_card_strengths(),
     }

@@ -109,6 +109,36 @@ class StatisticsDialog(QDialog):
             QLabel(f"Easy Reviews: {stats['easy_reviews']}")
         )
 
+        layout.addSpacing(10)
+
+        learning_label = QLabel("Learning Statistics")
+        learning_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(learning_label)
+
+        layout.addWidget(
+            QLabel(
+                f"New Cards: {stats['learning_strengths']['New']}"
+            )
+        )
+
+        layout.addWidget(
+            QLabel(
+                f"Weak Cards: {stats['learning_strengths']['Weak']}"
+            )
+        )
+
+        layout.addWidget(
+            QLabel(
+                f"Familiar Cards: {stats['learning_strengths']['Familiar']}"
+            )
+        )
+
+        layout.addWidget(
+            QLabel(
+                f"Strong Cards: {stats['learning_strengths']['Strong']}"
+            )
+        )
+
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.accept)
 
