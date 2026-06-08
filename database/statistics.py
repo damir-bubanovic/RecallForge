@@ -179,6 +179,33 @@ def get_review_count_by_rating(rating: str):
         row = cursor.fetchone()
         return row["total"]
 
+def get_reviews_today():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM review_history
+            WHERE DATE(reviewed_at) = DATE('now', 'localtime')
+        """)
+
+        row = cursor.fetchone()
+        return row["total"]
+
+
+def get_reviews_this_week():
+    with get_connection() as connection:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT COUNT(*) AS total
+            FROM review_history
+            WHERE DATE(reviewed_at) >= DATE('now', 'weekday 1', '-7 days')
+        """)
+
+        row = cursor.fetchone()
+        return row["total"]
+
 def get_basic_statistics():
     return {
         "total_subjects": get_total_subjects(),
@@ -195,4 +222,6 @@ def get_basic_statistics():
         "hard_reviews": get_review_count_by_rating("Hard"),
         "good_reviews": get_review_count_by_rating("Good"),
         "easy_reviews": get_review_count_by_rating("Easy"),
+        "reviews_today": get_reviews_today(),
+        "reviews_this_week": get_reviews_this_week(),
     }

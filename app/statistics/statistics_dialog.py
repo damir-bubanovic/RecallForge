@@ -86,6 +86,14 @@ class StatisticsDialog(QDialog):
         )
 
         layout.addWidget(
+            QLabel(f"Reviews Today: {stats['reviews_today']}")
+        )
+
+        layout.addWidget(
+            QLabel(f"Reviews This Week: {stats['reviews_this_week']}")
+        )
+
+        layout.addWidget(
             QLabel(f"Again Reviews: {stats['again_reviews']}")
         )
 
