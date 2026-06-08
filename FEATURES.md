@@ -18,9 +18,9 @@ RecallForge is currently in the core functionality phase.
 
 Current focus:
 
-* Statistics system
 * Review history
-* Spaced repetition engine
+* Learning analytics
+* Learning engine
 * UI polish and optimization
 * Maintain a clean and scalable architecture
 
@@ -85,7 +85,6 @@ Examples:
 
 * Subject icons
 * Subject colors
-* Subject statistics
 
 ---
 
@@ -105,7 +104,6 @@ Each subject can contain multiple topics.
 ## Future Possibilities
 
 * Nested topics
-* Topic statistics
 * Topic icons
 
 ---
@@ -177,32 +175,37 @@ User chooses:
 * Topic-based review sessions
 * Review completion message
 * Anki-style rating buttons
+* Review history logging
 
 ## Current Rating Behavior
 
 ### Again
 
+* Review is logged
 * Card is added back into the current review session
 
 ### Hard
 
+* Review is logged
 * Move to next card
 
 ### Good
 
+* Review is logged
 * Move to next card
 
 ### Easy
 
+* Review is logged
 * Move to next card
 
 ## Future Enhancements
 
-* True spaced repetition
-* Review statistics
-* Review history
-* Learning intervals
-* Due card scheduling
+* Learning analytics
+* Learning strength tracking
+* Weak card detection
+* Strong card detection
+* Optional learning engine improvements
 
 ---
 
@@ -269,6 +272,13 @@ Allow visual learning.
 * created_at
 * updated_at
 
+### Review History
+
+* id
+* card_id
+* rating
+* reviewed_at
+
 ## Implemented Features
 
 * Automatic database creation
@@ -276,6 +286,7 @@ Allow visual learning.
 * Subject CRUD operations
 * Topic CRUD operations
 * Card CRUD operations
+* Review history persistence
 * Foreign key relationships
 * SQLite persistence
 
@@ -332,22 +343,41 @@ Allow users to back up and transfer knowledge collections.
 
 ## Implemented
 
+### Collection Statistics
+
 * Total subjects
 * Total topics
 * Total cards
 * Cards with images
 * Cards without images
+
+### Organization Statistics
+
 * Average cards per topic
 * Largest topic card count
 * Top topics by card count
 * Top subjects by card count
 
+### Review Statistics
+
+* Total reviews
+* Reviews today
+* Reviews this week
+* Again review count
+* Hard review count
+* Good review count
+* Easy review count
+
+## Purpose
+
+Provide insight into collection growth and learning activity.
+
 ## Future Enhancements
 
-* Cards reviewed
-* Study sessions completed
 * Learning progress
-* Review history
+* Weak card detection
+* Strong card detection
+* Learning strength analytics
 
 ---
 
@@ -384,6 +414,7 @@ RecallForge is designed to be:
 * Card list panel
 * Card preview panel
 * Review dialog
+* Statistics dialog
 * Context menu workflow
 * ImageViewer widget
 * SVG image rendering
@@ -404,24 +435,33 @@ RecallForge is designed to be:
 
 ---
 
-# Chapter 14: Spaced Repetition System 🔴
+# Chapter 14: Learning Engine 🔴
 
 ## Purpose
 
-Implement a learning system inspired by Anki.
+Create a pressure-free learning system built around review history and learning analytics.
 
 ## Planned Features
 
-* Again
-* Hard
-* Good
-* Easy
-* Review intervals
-* Due cards
-* Learning stages
-* Ease factor
-* Review history
-* Scheduling engine
+* Learning strength tracking
+* Learning progress
+* Weak card identification
+* Strong card identification
+* Review history analysis
+* Personalized learning insights
+
+## Explicitly Not Required
+
+* Due dates
+* Overdue cards
+* Daily quotas
+* Forced study schedules
+
+## Design Philosophy
+
+Users should learn at their own pace.
+
+The system should provide insight and guidance rather than deadlines and pressure.
 
 ---
 
@@ -462,6 +502,7 @@ RecallForge
 │   ├── subjects.py
 │   ├── topics.py
 │   ├── cards.py
+│   ├── reviews.py
 │   ├── search.py
 │   └── statistics.py
 │
@@ -491,10 +532,11 @@ RecallForge
 9. Search System ✔
 10. Import / Export ✔
 11. Statistics ✔
+12. Review History ✔
 
 ## Remaining
 
-12. Spaced Repetition Engine
+13. Learning Engine
 
 ---
 
@@ -541,11 +583,15 @@ RecallForge
 
 * Statistics
 
-## Phase 11
+## Phase 11 ✅
 
-* Spaced Repetition Engine
+* Review History
 
 ## Phase 12
+
+* Learning Engine
+
+## Phase 13
 
 * Polish and optimization
 
@@ -553,6 +599,20 @@ RecallForge
 
 # Summary
 
-RecallForge currently supports full subject management, topic management, card management, image-enhanced flashcards, card previewing, topic-based review sessions, integrated search functionality, import/export, and basic statistics.
+RecallForge currently supports:
 
-The next milestone is a full Spaced Repetition Engine inspired by Anki, followed by data safety improvements and UI polish.
+* Full subject management
+* Full topic management
+* Full card management
+* Image-enhanced flashcards
+* Card previewing
+* Topic-based review sessions
+* Integrated search
+* Import / Export
+* Collection statistics
+* Review statistics
+* Review history tracking
+
+RecallForge remains fully offline, local-first, and user-controlled.
+
+The next milestone is a pressure-free Learning Engine built on review history and learning analytics, followed by data safety improvements and UI polish.
