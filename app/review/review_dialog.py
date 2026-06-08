@@ -126,27 +126,23 @@ class ReviewDialog(QDialog):
 
         self.load_current_question()
 
-    def rate_again(self):
+    def rate_card(self, rating: str, repeat_card: bool = False):
         current_card = self.cards[self.current_index]
-        create_review(current_card["id"], "Again")
+        create_review(current_card["id"], rating)
 
-        self.cards.append(current_card)
+        if repeat_card:
+            self.cards.append(current_card)
+
         self.move_to_next_card()
+
+    def rate_again(self):
+        self.rate_card("Again", repeat_card=True)
 
     def rate_hard(self):
-        current_card = self.cards[self.current_index]
-        create_review(current_card["id"], "Hard")
-
-        self.move_to_next_card()
+        self.rate_card("Hard")
 
     def rate_good(self):
-        current_card = self.cards[self.current_index]
-        create_review(current_card["id"], "Good")
-
-        self.move_to_next_card()
+        self.rate_card("Good")
 
     def rate_easy(self):
-        current_card = self.cards[self.current_index]
-        create_review(current_card["id"], "Easy")
-
-        self.move_to_next_card()
+        self.rate_card("Easy")

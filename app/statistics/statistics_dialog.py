@@ -1,10 +1,12 @@
 from PySide6.QtWidgets import (
     QDialog,
-    QLabel,
     QPushButton,
+    QScrollArea,
+    QWidget,
     QVBoxLayout,
 )
 
+from app.statistics.statistics_section import StatisticsSection
 from database.statistics import get_basic_statistics
 
 
@@ -17,131 +19,95 @@ class StatisticsDialog(QDialog):
 
         stats = get_basic_statistics()
 
+        content_widget = QWidget()
         layout = QVBoxLayout()
+        content_widget.setLayout(layout)
 
-        layout.addWidget(
-            QLabel(f"Total Subjects: {stats['total_subjects']}")
+        collection_section = StatisticsSection(
+            "Collection Statistics",
+            [
+                ("Total Subjects", stats["total_subjects"]),
+                ("Total Topics", stats["total_topics"]),
+                ("Total Cards", stats["total_cards"]),
+                ("Cards With Images", stats["total_cards_with_images"]),
+                ("Cards Without Images", stats["total_cards_without_images"]),
+                ("Average Cards Per Topic", stats["average_cards_per_topic"]),
+                ("Largest Topic Card Count", stats["largest_topic_card_count"]),
+            ],
         )
 
-        layout.addWidget(
-            QLabel(f"Total Topics: {stats['total_topics']}")
-        )
+        layout.addWidget(collection_section)
 
-        layout.addWidget(
-            QLabel(f"Total Cards: {stats['total_cards']}")
-        )
-
-        layout.addWidget(
-            QLabel(
-                f"Cards With Images: {stats['total_cards_with_images']}"
-            )
-        )
-
-        layout.addWidget(
-            QLabel(f"Cards Without Images: {stats['total_cards_without_images']}")
-        )
-
-        layout.addWidget(
-            QLabel(f"Average Cards Per Topic: {stats['average_cards_per_topic']}")
-        )
-
-        layout.addWidget(
-            QLabel(f"Largest Topic Card Count: {stats['largest_topic_card_count']}")
-        )
-
-        layout.addSpacing(10)
-
-        topics_label = QLabel("Top Topics")
-        topics_label.setStyleSheet("font-weight: bold;")
-        layout.addWidget(topics_label)
+        top_topics_rows = []
 
         for topic in stats["top_topics"]:
-            layout.addWidget(
-                QLabel(
-                    f"{topic['topic_name']} ({topic['card_count']} cards)"
+            top_topics_rows.append(
+                (
+                    topic["topic_name"],
+                    f"{topic['card_count']} cards",
                 )
             )
 
-        layout.addSpacing(10)
+        top_topics_section = StatisticsSection(
+            "Top Topics",
+            top_topics_rows,
+        )
 
-        subjects_label = QLabel("Top Subjects")
-        subjects_label.setStyleSheet("font-weight: bold;")
-        layout.addWidget(subjects_label)
+        layout.addWidget(top_topics_section)
+
+        top_subjects_rows = []
 
         for subject in stats["top_subjects"]:
-            layout.addWidget(
-                QLabel(
-                    f"{subject['subject_name']} ({subject['card_count']} cards)"
+            top_subjects_rows.append(
+                (
+                    subject["subject_name"],
+                    f"{subject['card_count']} cards",
                 )
             )
 
-        layout.addSpacing(10)
-
-        reviews_label = QLabel("Review Statistics")
-        reviews_label.setStyleSheet("font-weight: bold;")
-        layout.addWidget(reviews_label)
-
-        layout.addWidget(
-            QLabel(f"Total Reviews: {stats['total_reviews']}")
+        top_subjects_section = StatisticsSection(
+            "Top Subjects",
+            top_subjects_rows,
         )
 
-        layout.addWidget(
-            QLabel(f"Reviews Today: {stats['reviews_today']}")
+        layout.addWidget(top_subjects_section)
+
+        review_section = StatisticsSection(
+            "Review Statistics",
+            [
+                ("Total Reviews", stats["total_reviews"]),
+                ("Reviews Today", stats["reviews_today"]),
+                ("Reviews This Week", stats["reviews_this_week"]),
+                ("Again Reviews", stats["again_reviews"]),
+                ("Hard Reviews", stats["hard_reviews"]),
+                ("Good Reviews", stats["good_reviews"]),
+                ("Easy Reviews", stats["easy_reviews"]),
+            ],
         )
 
-        layout.addWidget(
-            QLabel(f"Reviews This Week: {stats['reviews_this_week']}")
+        layout.addWidget(review_section)
+
+        learning_section = StatisticsSection(
+            "Learning Statistics",
+            [
+                ("New Cards", stats["learning_strengths"]["New"]),
+                ("Weak Cards", stats["learning_strengths"]["Weak"]),
+                ("Familiar Cards", stats["learning_strengths"]["Familiar"]),
+                ("Strong Cards", stats["learning_strengths"]["Strong"]),
+            ],
         )
 
-        layout.addWidget(
-            QLabel(f"Again Reviews: {stats['again_reviews']}")
-        )
+        layout.addWidget(learning_section)
 
-        layout.addWidget(
-            QLabel(f"Hard Reviews: {stats['hard_reviews']}")
-        )
-
-        layout.addWidget(
-            QLabel(f"Good Reviews: {stats['good_reviews']}")
-        )
-
-        layout.addWidget(
-            QLabel(f"Easy Reviews: {stats['easy_reviews']}")
-        )
-
-        layout.addSpacing(10)
-
-        learning_label = QLabel("Learning Statistics")
-        learning_label.setStyleSheet("font-weight: bold;")
-        layout.addWidget(learning_label)
-
-        layout.addWidget(
-            QLabel(
-                f"New Cards: {stats['learning_strengths']['New']}"
-            )
-        )
-
-        layout.addWidget(
-            QLabel(
-                f"Weak Cards: {stats['learning_strengths']['Weak']}"
-            )
-        )
-
-        layout.addWidget(
-            QLabel(
-                f"Familiar Cards: {stats['learning_strengths']['Familiar']}"
-            )
-        )
-
-        layout.addWidget(
-            QLabel(
-                f"Strong Cards: {stats['learning_strengths']['Strong']}"
-            )
-        )
-
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(content_widget)
         close_button = QPushButton("Close")
         close_button.clicked.connect(self.accept)
 
         layout.addWidget(close_button)
 
-        self.setLayout(layout)
+        dialog_layout = QVBoxLayout()
+        dialog_layout.addWidget(scroll_area)
+
+        self.setLayout(dialog_layout)
