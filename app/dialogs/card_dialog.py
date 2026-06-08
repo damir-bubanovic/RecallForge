@@ -52,28 +52,36 @@ class CardDialog(QDialog):
     def setup_ui(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel("Question"))
-        layout.addWidget(self.question_input)
+        self.add_labeled_widget(
+            layout,
+            "Question",
+            self.question_input,
+        )
 
-        layout.addWidget(QLabel("Question Image"))
-        layout.addLayout(
+        self.add_labeled_layout(
+            layout,
+            "Question Image",
             self.create_image_row(
                 self.question_image_input,
                 self.browse_question_image,
                 self.clear_question_image,
-            )
+            ),
         )
 
-        layout.addWidget(QLabel("Answer"))
-        layout.addWidget(self.answer_input)
+        self.add_labeled_widget(
+            layout,
+            "Answer",
+            self.answer_input,
+        )
 
-        layout.addWidget(QLabel("Answer Image"))
-        layout.addLayout(
+        self.add_labeled_layout(
+            layout,
+            "Answer Image",
             self.create_image_row(
                 self.answer_image_input,
                 self.browse_answer_image,
                 self.clear_answer_image,
-            )
+            ),
         )
 
         layout.addWidget(self.button_box)
@@ -82,6 +90,16 @@ class CardDialog(QDialog):
 
         self.button_box.accepted.connect(self.accept)
         self.button_box.rejected.connect(self.reject)
+
+    @staticmethod
+    def add_labeled_widget(layout, label_text: str, widget):
+        layout.addWidget(QLabel(label_text))
+        layout.addWidget(widget)
+
+    @staticmethod
+    def add_labeled_layout(layout, label_text: str, child_layout):
+        layout.addWidget(QLabel(label_text))
+        layout.addLayout(child_layout)
 
     @staticmethod
     def create_image_row(line_edit, browse_callback, clear_callback):
