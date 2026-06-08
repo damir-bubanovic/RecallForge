@@ -58,13 +58,16 @@ class CardPanel(QWidget):
         self.card_list.customContextMenuRequested.connect(self.show_context_menu)
         self.card_list.itemClicked.connect(self.handle_card_selected)
 
+    def clear_topic_selection(self):
+        self.current_topic_id = None
+        self.current_topic_name = None
+        self.title_label.setText("Cards")
+        self.help_label.setText("Select a topic to manage cards.")
+        self.card_list.clear()
+
     def load_cards_for_topic(self, topic_id: int | None, topic_name: str):
         if topic_id is None:
-            self.current_topic_id = None
-            self.current_topic_name = None
-            self.title_label.setText("Cards")
-            self.help_label.setText("Select a topic to manage cards.")
-            self.card_list.clear()
+            self.clear_topic_selection()
             return
 
         self.current_topic_id = topic_id
