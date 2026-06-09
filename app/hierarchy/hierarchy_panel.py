@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QTreeWidget, QVBoxLayout, QWidget
+from PySide6.QtSvgWidgets import QSvgWidget
+from PySide6.QtWidgets import QLabel, QHBoxLayout, QTreeWidget, QVBoxLayout, QWidget
 
 from app.hierarchy.hierarchy_loader import (
     ITEM_ID_ROLE,
@@ -15,6 +16,12 @@ class HierarchyPanel(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.logo = QSvgWidget("assets/logo.svg")
+        self.logo.setFixedSize(40, 40)
+
+        self.app_title_label = QLabel("RecallForge")
+        self.app_title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+
         self.tree = QTreeWidget()
         self.tree.setHeaderLabel("Subjects / Topics")
         self.tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -24,6 +31,13 @@ class HierarchyPanel(QWidget):
 
     def setup_ui(self):
         layout = QVBoxLayout()
+
+        header_layout = QHBoxLayout()
+        header_layout.addWidget(self.logo)
+        header_layout.addWidget(self.app_title_label)
+        header_layout.addStretch()
+
+        layout.addLayout(header_layout)
         layout.addWidget(self.tree)
 
         self.setLayout(layout)

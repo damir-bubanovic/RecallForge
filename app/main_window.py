@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QApplication, QHBoxLayout, QMainWindow, QWidget
 from PySide6.QtCore import QSettings
+from PySide6.QtGui import QIcon
 
 from app.cards.card_panel import CardPanel
 from app.hierarchy.hierarchy_panel import HierarchyPanel
@@ -16,6 +17,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("RecallForge")
+        self.setWindowIcon(QIcon("assets/logo.svg"))
         self.setMinimumSize(1300, 650)
 
         self.dark_mode_enabled = dark_mode_enabled
