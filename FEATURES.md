@@ -14,15 +14,16 @@ Built using:
 
 # Current Development Phase
 
-RecallForge is currently in the core functionality phase.
+RecallForge is currently in the release preparation phase.
 
 Current focus:
 
-* Review history
-* Learning analytics
-* Learning engine
-* UI polish and optimization
-* Maintain a clean and scalable architecture
+* UI polish
+* Architecture cleanup
+* User experience improvements
+* Data safety improvements
+* Release readiness
+* Documentation
 
 ---
 
@@ -38,6 +39,8 @@ Current focus:
 * Clean separation between UI and database layers
 * Context menu based workflow
 * Reusable widget architecture
+* Theme management system
+* Persistent application settings
 
 ---
 
@@ -176,6 +179,7 @@ User chooses:
 * Review completion message
 * Anki-style rating buttons
 * Review history logging
+* Learning strength tracking
 
 ## Current Rating Behavior
 
@@ -187,25 +191,26 @@ User chooses:
 ### Hard
 
 * Review is logged
+* Learning strength updated
 * Move to next card
 
 ### Good
 
 * Review is logged
+* Learning strength updated
 * Move to next card
 
 ### Easy
 
 * Review is logged
+* Learning strength updated
 * Move to next card
 
-## Future Enhancements
+## Integrated Systems
 
-* Learning analytics
-* Learning strength tracking
-* Weak card detection
-* Strong card detection
-* Optional learning engine improvements
+* Review History
+* Learning Engine
+* Statistics System
 
 ---
 
@@ -332,18 +337,30 @@ Search through:
 
 * JSON import
 * Backup restore
+* Import validation
+* Import safety confirmation dialog
 
 ## Purpose
 
 Allow users to back up and transfer knowledge collections.
 
+## Features
+
+* Preserves subjects
+* Preserves topics
+* Preserves cards
+* Preserves card metadata
+* Safe data replacement workflow
+
 ---
 
 # Chapter 10: Statistics System ✅
 
-## Implemented
+## Purpose
 
-### Collection Statistics
+Provide insight into collection growth and learning activity.
+
+## Collection Statistics
 
 * Total subjects
 * Total topics
@@ -351,14 +368,14 @@ Allow users to back up and transfer knowledge collections.
 * Cards with images
 * Cards without images
 
-### Organization Statistics
+## Organization Statistics
 
 * Average cards per topic
 * Largest topic card count
 * Top topics by card count
 * Top subjects by card count
 
-### Review Statistics
+## Review Statistics
 
 * Total reviews
 * Reviews today
@@ -368,16 +385,20 @@ Allow users to back up and transfer knowledge collections.
 * Good review count
 * Easy review count
 
-## Purpose
+## Learning Statistics
 
-Provide insight into collection growth and learning activity.
+* New cards
+* Weak cards
+* Familiar cards
+* Strong cards
 
-## Future Enhancements
+## Implemented Features
 
-* Learning progress
-* Weak card detection
-* Strong card detection
-* Learning strength analytics
+* Scrollable statistics dialog
+* Reusable statistics sections
+* Collection analytics
+* Review analytics
+* Learning analytics
 
 ---
 
@@ -390,78 +411,125 @@ RecallForge is designed to be:
 * Private
 * User-controlled
 
+## Benefits
+
+* No cloud dependency
+* No account required
+* No subscriptions
+* No internet connection required
+* Full ownership of learning data
+
 ---
 
 # Chapter 12: Data Safety 🟡
 
+## Implemented
+
+* Import validation
+* Import safety confirmation dialog
+* SQLite foreign key protection
+* Local data ownership
+
 ## Planned
 
 * Automatic backups
-* Safe database operations
-* Confirmation dialogs before deletion
+* Safe database snapshots
 * Recovery options
+* Backup manager
 
 ---
 
-# Chapter 13: UI / UX 🟡
+# Chapter 13: UI / UX ✅
 
 ## Implemented
+
+### Core Interface
 
 * Main desktop window
 * Hierarchy tree panel
 * Search panel
-* Subject and Topic management
 * Card list panel
 * Card preview panel
 * Review dialog
 * Statistics dialog
+
+### User Experience
+
 * Context menu workflow
-* ImageViewer widget
+* Reusable widget architecture
+* Scrollable statistics window
+* Cleaner panel organization
+* Reusable statistics sections
+
+### Appearance
+
+* Application branding
+* SVG application logo
+* Custom application icon
+* Dark mode
+* Light mode
+* Persistent theme settings
+* Automatic theme restoration on startup
+
+### Visual Components
+
 * SVG image rendering
-
-## Planned
-
-* Modern desktop styling
-* Improved navigation
-* Comfortable reading layout
-* Dark mode support
-* Light mode support
+* ImageViewer widget
+* StatisticsSection widget
 
 ## Future Possibilities
 
 * Custom themes
 * Font size controls
 * Accessibility improvements
+* Optional layout customization
 
 ---
 
-# Chapter 14: Learning Engine 🔴
+# Chapter 14: Learning Engine ✅
 
 ## Purpose
 
 Create a pressure-free learning system built around review history and learning analytics.
 
-## Planned Features
+## Implemented Features
 
-* Learning strength tracking
-* Learning progress
-* Weak card identification
-* Strong card identification
-* Review history analysis
-* Personalized learning insights
+### Review Tracking
+
+* Review history logging
+* Rating persistence
+* Learning analytics foundation
+
+### Learning Strength Classification
+
+Cards are automatically categorized as:
+
+* New
+* Weak
+* Familiar
+* Strong
+
+### Analytics Integration
+
+* Statistics integration
+* Learning strength reporting
+* Collection insight generation
 
 ## Explicitly Not Required
+
+RecallForge intentionally avoids:
 
 * Due dates
 * Overdue cards
 * Daily quotas
 * Forced study schedules
+* Punishment-based learning systems
 
 ## Design Philosophy
 
 Users should learn at their own pace.
 
-The system should provide insight and guidance rather than deadlines and pressure.
+The system provides insight and feedback rather than deadlines and pressure.
 
 ---
 
@@ -476,6 +544,73 @@ Subject
         ├── Question Image (Optional)
         ├── Answer
         └── Answer Image (Optional)
+
+        ↓
+
+Review History
+        ↓
+
+Learning Engine
+        ↓
+
+Statistics System
+
+---
+
+# Architecture Principles
+
+RecallForge follows a simple layered architecture:
+
+## Presentation Layer
+
+Responsible for:
+
+* Windows
+* Dialogs
+* Panels
+* Widgets
+* User interactions
+
+Examples:
+
+* MainWindow
+* CardDialog
+* ReviewDialog
+* StatisticsDialog
+* StatisticsSection
+* ImageViewer
+
+## Action Layer
+
+Responsible for:
+
+* User-triggered operations
+* UI-to-database coordination
+* Error handling
+
+Examples:
+
+* card_actions.py
+* hierarchy_actions.py
+
+## Persistence Layer
+
+Responsible for:
+
+* SQLite operations
+* CRUD logic
+* Statistics queries
+* Learning analytics
+* Import / Export operations
+
+Examples:
+
+* subjects.py
+* topics.py
+* cards.py
+* reviews.py
+* statistics.py
+* learning.py
 
 ---
 
@@ -492,6 +627,7 @@ RecallForge
 │   ├── review/
 │   ├── search/
 │   ├── statistics/
+│   ├── theme/
 │   ├── utils/
 │   ├── widgets/
 │   └── main_window.py
@@ -503,11 +639,16 @@ RecallForge
 │   ├── topics.py
 │   ├── cards.py
 │   ├── reviews.py
+│   ├── learning.py
 │   ├── search.py
-│   └── statistics.py
+│   ├── statistics.py
+│   ├── import_data.py
+│   └── export_data.py
+│
+├── assets/
+│   └── logo.svg
 │
 ├── data/
-├── assets/
 ├── tests/
 │
 ├── main.py
@@ -521,8 +662,8 @@ RecallForge
 
 ## Completed
 
-1. Launch desktop application ✔
-2. Create SQLite database ✔
+1. Desktop Application Foundation ✔
+2. SQLite Database ✔
 3. Subject CRUD ✔
 4. Topic CRUD ✔
 5. Card CRUD ✔
@@ -531,12 +672,19 @@ RecallForge
 8. Image Support ✔
 9. Search System ✔
 10. Import / Export ✔
-11. Statistics ✔
+11. Statistics System ✔
 12. Review History ✔
+13. Learning Engine ✔
+14. Dark Mode ✔
+15. Theme Persistence ✔
+16. Application Branding ✔
 
 ## Remaining
 
-13. Learning Engine
+* UI polish
+* Data safety improvements
+* Documentation
+* Release preparation
 
 ---
 
@@ -581,38 +729,97 @@ RecallForge
 
 ## Phase 10 ✅
 
-* Statistics
+* Statistics System
 
 ## Phase 11 ✅
 
 * Review History
 
-## Phase 12
+## Phase 12 ✅
 
 * Learning Engine
 
-## Phase 13
+## Phase 13 🟡
 
-* Polish and optimization
+* UI polish
+* Architecture cleanup
+* Theme system
+* Branding
+* User experience improvements
+
+## Phase 14
+
+* Release preparation
+
+---
+
+# Current Status
+
+RecallForge currently provides:
+
+### Knowledge Management
+
+* Subject management
+* Topic management
+* Card management
+* Image-enhanced flashcards
+
+### Learning
+
+* Interactive review sessions
+* Review history tracking
+* Learning strength classification
+* Learning analytics
+
+### Productivity
+
+* Real-time search
+* Import / Export
+* Statistics dashboard
+
+### User Experience
+
+* Dark mode
+* Light mode
+* Persistent theme settings
+* Application branding
+* SVG support
+
+### Technical Foundation
+
+* SQLite persistence
+* Modular architecture
+* Reusable widgets
+* Local-first design
+* Offline operation
 
 ---
 
 # Summary
 
-RecallForge currently supports:
+RecallForge is a fully offline desktop flashcard application focused on creating, organizing, reviewing, and analyzing knowledge through a simple hierarchy of subjects, topics, and cards.
 
-* Full subject management
-* Full topic management
-* Full card management
-* Image-enhanced flashcards
-* Card previewing
-* Topic-based review sessions
-* Integrated search
+The application now includes:
+
+* Complete CRUD functionality
+* Review Mode
+* Review History
+* Learning Engine
+* Collection Statistics
+* Learning Statistics
 * Import / Export
-* Collection statistics
-* Review statistics
-* Review history tracking
+* Dark Mode
+* Persistent User Preferences
+* Application Branding
 
-RecallForge remains fully offline, local-first, and user-controlled.
+RecallForge remains:
 
-The next milestone is a pressure-free Learning Engine built on review history and learning analytics, followed by data safety improvements and UI polish.
+* Fully offline
+* Local-first
+* Private
+* User-controlled
+* Pressure-free
+
+The current focus is final UI polish, documentation improvements, release preparation, and preparing the first stable public release.
+
+---
