@@ -19,7 +19,11 @@ def import_from_json(parent, refresh_callback=None):
     confirmation = QMessageBox.question(
         parent,
         "Import Data",
-        "This will replace all current subjects, topics, and cards.\n\nContinue?",
+        (
+            "This will replace all current subjects, topics, cards, "
+            "and review history.\n\n"
+            "Continue?"
+        ),
     )
 
     if confirmation != QMessageBox.StandardButton.Yes:
