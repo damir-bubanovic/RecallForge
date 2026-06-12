@@ -11,6 +11,7 @@ from app.search.search_panel import SearchPanel
 from app.dialogs.about_dialog import AboutDialog
 from app.statistics.statistics_dialog import StatisticsDialog
 from app.theme.theme_manager import apply_dark_theme, apply_light_theme
+from app.utils.paths import get_asset_path
 
 
 class MainWindow(QMainWindow):
@@ -18,7 +19,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("RecallForge")
-        self.setWindowIcon(QIcon("assets/logo.svg"))
+        self.setWindowIcon(QIcon(get_asset_path("logo.svg")))
         self.setMinimumSize(1300, 650)
 
         self.dark_mode_enabled = dark_mode_enabled

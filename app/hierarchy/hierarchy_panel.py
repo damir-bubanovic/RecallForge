@@ -8,6 +8,7 @@ from app.hierarchy.hierarchy_loader import (
     load_hierarchy,
 )
 from app.hierarchy.hierarchy_menu import open_context_menu
+from app.utils.paths import get_asset_path
 
 
 class HierarchyPanel(QWidget):
@@ -16,7 +17,7 @@ class HierarchyPanel(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.logo = QSvgWidget("assets/logo.svg")
+        self.logo = QSvgWidget(get_asset_path("logo.svg"))
         self.logo.setFixedSize(40, 40)
 
         self.app_title_label = QLabel("RecallForge")

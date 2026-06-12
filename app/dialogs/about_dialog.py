@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from app.utils.paths import get_asset_path
+
 
 class AboutDialog(QDialog):
     def __init__(self, parent=None):
@@ -17,7 +19,7 @@ class AboutDialog(QDialog):
         self.setWindowTitle("About RecallForge")
         self.setMinimumWidth(450)
 
-        self.logo = QSvgWidget("assets/logo.svg")
+        self.logo = QSvgWidget(get_asset_path("logo.svg"))
         self.logo.setFixedSize(100, 100)
 
         self.setup_ui()
