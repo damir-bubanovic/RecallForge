@@ -9,10 +9,9 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from app.widgets.image_viewer import ImageViewer
+from app.styles.font_sizes import FONT_SIZE_REVIEW_CARD, font_size_px
 from database.cards import get_cards_by_topic
 from database.reviews import create_review
-from app.styles.font_sizes import FONT_SIZE_REVIEW_CARD, font_size_px
 
 
 class ReviewDialog(QDialog):
@@ -36,8 +35,6 @@ class ReviewDialog(QDialog):
         self.card_text_label.setReadOnly(True)
         self.card_text_label.setStyleSheet(font_size_px(FONT_SIZE_REVIEW_CARD))
 
-        self.image_viewer = ImageViewer(width=420, height=260)
-
         self.show_answer_button = QPushButton("Show Answer")
         self.show_answer_button.setMinimumHeight(50)
 
@@ -60,7 +57,6 @@ class ReviewDialog(QDialog):
 
         layout.addWidget(self.progress_label)
         layout.addWidget(self.card_text_label)
-        layout.addWidget(self.image_viewer)
         layout.addWidget(self.show_answer_button)
         layout.addLayout(rating_layout)
 
@@ -97,7 +93,6 @@ class ReviewDialog(QDialog):
         )
 
         self.card_text_label.setHtml(card["question_text"])
-        self.image_viewer.show_image(card["question_image_path"])
 
         self.show_answer_button.setVisible(True)
         self.set_rating_buttons_visible(False)
@@ -108,7 +103,6 @@ class ReviewDialog(QDialog):
         self.showing_answer = True
 
         self.card_text_label.setHtml(card["answer_text"])
-        self.image_viewer.show_image(card["answer_image_path"])
 
         self.show_answer_button.setVisible(False)
         self.set_rating_buttons_visible(True)

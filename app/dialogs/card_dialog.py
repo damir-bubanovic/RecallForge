@@ -1,18 +1,21 @@
-from PySide6.QtGui import QTextCharFormat, QFont
+from PySide6.QtGui import QTextCharFormat, QTextImageFormat, QTextListFormat, QFont, QImageReader
 from PySide6.QtWidgets import (
+    QComboBox,
     QDialog,
     QDialogButtonBox,
     QFileDialog,
     QHBoxLayout,
     QLabel,
-    QLineEdit,
-    QPushButton,
     QTextEdit,
     QToolButton,
     QVBoxLayout,
 )
 
 from app.utils.image_storage import copy_image_to_data
+
+
+FONT_SIZES = [18, 20, 22, 24, 26, 28, 32]
+INLINE_IMAGE_MAX_WIDTH = 520
 
 
 def set_text_edit_content(text_edit: QTextEdit, content: str):
@@ -29,8 +32,6 @@ class CardDialog(QDialog):
         title="Card",
         question_text="",
         answer_text="",
-        question_image_path=None,
-        answer_image_path=None,
     ):
         super().__init__(parent)
 
@@ -40,16 +41,8 @@ class CardDialog(QDialog):
         self.question_input = QTextEdit()
         set_text_edit_content(self.question_input, question_text)
 
-        self.question_image_input = QLineEdit()
-        self.question_image_input.setReadOnly(True)
-        self.question_image_input.setText(question_image_path or "")
-
         self.answer_input = QTextEdit()
         set_text_edit_content(self.answer_input, answer_text)
-
-        self.answer_image_input = QLineEdit()
-        self.answer_image_input.setReadOnly(True)
-        self.answer_image_input.setText(answer_image_path or "")
 
         self.button_box = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Save
@@ -67,30 +60,10 @@ class CardDialog(QDialog):
             self.question_input,
         )
 
-        self.add_labeled_layout(
-            layout,
-            "Question Image",
-            self.create_image_row(
-                self.question_image_input,
-                self.browse_question_image,
-                self.clear_question_image,
-            ),
-        )
-
         self.add_labeled_rich_text_widget(
             layout,
             "Answer",
             self.answer_input,
-        )
-
-        self.add_labeled_layout(
-            layout,
-            "Answer Image",
-            self.create_image_row(
-                self.answer_image_input,
-                self.browse_answer_image,
-                self.clear_answer_image,
-            ),
         )
 
         layout.addWidget(self.button_box)
@@ -104,11 +77,6 @@ class CardDialog(QDialog):
         layout.addWidget(QLabel(label_text))
         layout.addLayout(self.create_format_toolbar(text_edit))
         layout.addWidget(text_edit)
-
-    @staticmethod
-    def add_labeled_layout(layout, label_text: str, child_layout):
-        layout.addWidget(QLabel(label_text))
-        layout.addLayout(child_layout)
 
     def create_format_toolbar(self, text_edit: QTextEdit):
         toolbar = QHBoxLayout()
@@ -131,9 +99,44 @@ class CardDialog(QDialog):
         underline_button.setStyleSheet("text-decoration: underline;")
         underline_button.clicked.connect(lambda checked: self.toggle_underline(text_edit, checked))
 
+        bullet_button = QToolButton()
+        bullet_button.setText("• List")
+        bullet_button.clicked.connect(
+            lambda: self.apply_list(text_edit, QTextListFormat.Style.ListDisc)
+        )
+
+        numbered_button = QToolButton()
+        numbered_button.setText("1. List")
+        numbered_button.clicked.connect(
+            lambda: self.apply_list(text_edit, QTextListFormat.Style.ListDecimal)
+        )
+
+        font_size_dropdown = QComboBox()
+        for size in FONT_SIZES:
+            font_size_dropdown.addItem(f"{size}px", size)
+
+        font_size_dropdown.setCurrentText("18px")
+        font_size_dropdown.currentIndexChanged.connect(
+            lambda index: self.apply_font_size(
+                text_edit,
+                font_size_dropdown.itemData(index),
+            )
+        )
+
+        insert_image_button = QToolButton()
+        insert_image_button.setText("Image")
+        insert_image_button.clicked.connect(
+            lambda: self.insert_inline_image(text_edit)
+        )
+
         toolbar.addWidget(bold_button)
         toolbar.addWidget(italic_button)
         toolbar.addWidget(underline_button)
+        toolbar.addWidget(bullet_button)
+        toolbar.addWidget(numbered_button)
+        toolbar.addWidget(QLabel("Size"))
+        toolbar.addWidget(font_size_dropdown)
+        toolbar.addWidget(insert_image_button)
         toolbar.addStretch()
 
         return toolbar
@@ -163,38 +166,28 @@ class CardDialog(QDialog):
         text_format.setFontUnderline(checked)
         self.merge_format(text_edit, text_format)
 
+    def apply_font_size(self, text_edit: QTextEdit, size: int):
+        text_format = QTextCharFormat()
+        text_format.setFontPointSize(size)
+        self.merge_format(text_edit, text_format)
+
     @staticmethod
-    def create_image_row(line_edit, browse_callback, clear_callback):
-        row = QHBoxLayout()
+    def apply_list(text_edit: QTextEdit, list_style: QTextListFormat.Style):
+        cursor = text_edit.textCursor()
+        cursor.beginEditBlock()
 
-        browse_button = QPushButton("Browse")
-        clear_button = QPushButton("Clear")
+        list_format = QTextListFormat()
+        list_format.setStyle(list_style)
 
-        browse_button.clicked.connect(browse_callback)
-        clear_button.clicked.connect(clear_callback)
+        cursor.createList(list_format)
+        cursor.endEditBlock()
 
-        row.addWidget(line_edit)
-        row.addWidget(browse_button)
-        row.addWidget(clear_button)
+        text_edit.setFocus()
 
-        return row
-
-    def browse_question_image(self):
-        self.select_image(self.question_image_input)
-
-    def browse_answer_image(self):
-        self.select_image(self.answer_image_input)
-
-    def clear_question_image(self):
-        self.question_image_input.clear()
-
-    def clear_answer_image(self):
-        self.answer_image_input.clear()
-
-    def select_image(self, target_input):
+    def insert_inline_image(self, text_edit: QTextEdit):
         file_path, _ = QFileDialog.getOpenFileName(
             self,
-            "Select Image",
+            "Insert Image",
             "",
             "Images (*.png *.jpg *.jpeg *.webp *.svg)"
         )
@@ -203,12 +196,32 @@ class CardDialog(QDialog):
             return
 
         copied_path = copy_image_to_data(file_path)
-        target_input.setText(copied_path)
+
+        image_reader = QImageReader(copied_path)
+        image_size = image_reader.size()
+
+        image_format = QTextImageFormat()
+        image_format.setName(copied_path)
+
+        if image_size.isValid():
+            available_width = max(200, text_edit.viewport().width() - 40)
+            display_width = min(
+                image_size.width(),
+                available_width,
+                INLINE_IMAGE_MAX_WIDTH,
+            )
+            image_format.setWidth(display_width)
+
+        cursor = text_edit.textCursor()
+        cursor.insertImage(image_format)
+        cursor.insertBlock()
+
+        text_edit.setFocus()
 
     def get_data(self):
         return {
             "question_text": self.question_input.toHtml().strip(),
             "answer_text": self.answer_input.toHtml().strip(),
-            "question_image_path": self.question_image_input.text().strip() or None,
-            "answer_image_path": self.answer_image_input.text().strip() or None,
+            "question_image_path": None,
+            "answer_image_path": None,
         }
