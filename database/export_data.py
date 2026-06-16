@@ -1,21 +1,4 @@
-from pathlib import Path
-
 from database.connection import get_connection
-
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-def make_relative_path(path_value):
-    if not path_value:
-        return None
-
-    path = Path(path_value)
-
-    try:
-        return str(path.relative_to(BASE_DIR))
-    except ValueError:
-        return str(path)
 
 
 def get_all_subjects():
@@ -59,8 +42,6 @@ def get_all_cards():
                 topic_id,
                 question_text,
                 answer_text,
-                question_image_path,
-                answer_image_path,
                 created_at,
                 updated_at
             FROM cards
@@ -68,26 +49,12 @@ def get_all_cards():
             """
         )
 
-        cards = []
-
-        for row in cursor.fetchall():
-            card = dict(row)
-
-            card["question_image_path"] = make_relative_path(
-                card["question_image_path"]
-            )
-            card["answer_image_path"] = make_relative_path(
-                card["answer_image_path"]
-            )
-
-            cards.append(card)
-
-        return cards
+        return [dict(row) for row in cursor.fetchall()]
 
 
 def get_export_data():
     return {
-        "version": 1,
+        "version": 2,
         "subjects": get_all_subjects(),
         "topics": get_all_topics(),
         "cards": get_all_cards(),

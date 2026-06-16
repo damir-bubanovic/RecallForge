@@ -222,6 +222,4 @@ class CardDialog(QDialog):
         return {
             "question_text": self.question_input.toHtml().strip(),
             "answer_text": self.answer_input.toHtml().strip(),
-            "question_image_path": None,
-            "answer_image_path": None,
         }

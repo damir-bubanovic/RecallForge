@@ -36,8 +36,6 @@ def add_card(parent, topic_id: int, reload_callback):
             topic_id=topic_id,
             question_text=data["question_text"],
             answer_text=data["answer_text"],
-            question_image_path=None,
-            answer_image_path=None,
         ),
         reload_callback,
     )
@@ -66,8 +64,6 @@ def edit_card(parent, item, reload_callback):
             card_id=card_id,
             question_text=data["question_text"],
             answer_text=data["answer_text"],
-            question_image_path=None,
-            answer_image_path=None,
         ),
         reload_callback,
     )

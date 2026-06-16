@@ -29,8 +29,6 @@ class StatisticsDialog(QDialog):
                 ("Total Subjects", stats["total_subjects"]),
                 ("Total Topics", stats["total_topics"]),
                 ("Total Cards", stats["total_cards"]),
-                ("Cards With Images", stats["total_cards_with_images"]),
-                ("Cards Without Images", stats["total_cards_without_images"]),
                 ("Average Cards Per Topic", stats["average_cards_per_topic"]),
                 ("Largest Topic Card Count", stats["largest_topic_card_count"]),
             ],

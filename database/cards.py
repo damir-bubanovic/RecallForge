@@ -5,8 +5,6 @@ def create_card(
     topic_id: int,
     question_text: str,
     answer_text: str,
-    question_image_path: str | None = None,
-    answer_image_path: str | None = None,
 ):
     cleaned_question = question_text.strip()
     cleaned_answer = answer_text.strip()
@@ -25,19 +23,15 @@ def create_card(
             INSERT INTO cards (
                 topic_id,
                 question_text,
-                answer_text,
-                question_image_path,
-                answer_image_path
+                answer_text
             )
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?)
             """,
             (
                 topic_id,
                 cleaned_question,
                 cleaned_answer,
-                question_image_path,
-                answer_image_path,
-            )
+            ),
         )
 
         connection.commit()
@@ -56,15 +50,13 @@ def get_cards_by_topic(topic_id: int):
                 topic_id,
                 question_text,
                 answer_text,
-                question_image_path,
-                answer_image_path,
                 created_at,
                 updated_at
             FROM cards
             WHERE topic_id = ?
             ORDER BY id ASC
             """,
-            (topic_id,)
+            (topic_id,),
         )
 
         return cursor.fetchall()
@@ -74,8 +66,6 @@ def update_card(
     card_id: int,
     question_text: str,
     answer_text: str,
-    question_image_path: str | None = None,
-    answer_image_path: str | None = None,
 ):
     cleaned_question = question_text.strip()
     cleaned_answer = answer_text.strip()
@@ -94,18 +84,14 @@ def update_card(
             UPDATE cards
             SET question_text = ?,
                 answer_text = ?,
-                question_image_path = ?,
-                answer_image_path = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
             """,
             (
                 cleaned_question,
                 cleaned_answer,
-                question_image_path,
-                answer_image_path,
                 card_id,
-            )
+            ),
         )
 
         connection.commit()
@@ -122,7 +108,7 @@ def delete_card(card_id: int):
             DELETE FROM cards
             WHERE id = ?
             """,
-            (card_id,)
+            (card_id,),
         )
 
         connection.commit()

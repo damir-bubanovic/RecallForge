@@ -88,19 +88,15 @@ def import_cards(cards, topic_id_map):
                     topic_id,
                     question_text,
                     answer_text,
-                    question_image_path,
-                    answer_image_path,
                     created_at,
                     updated_at
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?)
                 """,
                 (
                     new_topic_id,
                     card["question_text"],
                     card["answer_text"],
-                    card.get("question_image_path"),
-                    card.get("answer_image_path"),
                     card.get("created_at"),
                     card.get("updated_at"),
                 ),

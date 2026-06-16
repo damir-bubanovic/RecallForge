@@ -34,8 +34,6 @@ def initialize_database():
                 topic_id INTEGER NOT NULL,
                 question_text TEXT NOT NULL,
                 answer_text TEXT NOT NULL,
-                question_image_path TEXT,
-                answer_image_path TEXT,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE

@@ -41,36 +41,6 @@ def get_total_cards():
         return row["total"]
 
 
-def get_total_cards_with_images():
-    with get_connection() as connection:
-        cursor = connection.cursor()
-
-        cursor.execute("""
-            SELECT COUNT(*) AS total
-            FROM cards
-            WHERE question_image_path IS NOT NULL
-               OR answer_image_path IS NOT NULL
-        """)
-
-        row = cursor.fetchone()
-        return row["total"]
-
-
-def get_total_cards_without_images():
-    with get_connection() as connection:
-        cursor = connection.cursor()
-
-        cursor.execute("""
-            SELECT COUNT(*) AS total
-            FROM cards
-            WHERE question_image_path IS NULL
-              AND answer_image_path IS NULL
-        """)
-
-        row = cursor.fetchone()
-        return row["total"]
-
-
 def get_average_cards_per_topic():
     with get_connection() as connection:
         cursor = connection.cursor()
@@ -122,7 +92,7 @@ def get_top_topics(limit: int = 5):
             ORDER BY card_count DESC, topics.name ASC
             LIMIT ?
             """,
-            (limit,)
+            (limit,),
         )
 
         return cursor.fetchall()
@@ -146,10 +116,11 @@ def get_top_subjects(limit: int = 5):
             ORDER BY card_count DESC, subjects.name ASC
             LIMIT ?
             """,
-            (limit,)
+            (limit,),
         )
 
         return cursor.fetchall()
+
 
 def get_total_reviews():
     with get_connection() as connection:
@@ -174,11 +145,12 @@ def get_review_count_by_rating(rating: str):
             FROM review_history
             WHERE rating = ?
             """,
-            (rating,)
+            (rating,),
         )
 
         row = cursor.fetchone()
         return row["total"]
+
 
 def get_reviews_today():
     with get_connection() as connection:
@@ -207,13 +179,12 @@ def get_reviews_this_week():
         row = cursor.fetchone()
         return row["total"]
 
+
 def get_basic_statistics():
     return {
         "total_subjects": get_total_subjects(),
         "total_topics": get_total_topics(),
         "total_cards": get_total_cards(),
-        "total_cards_with_images": get_total_cards_with_images(),
-        "total_cards_without_images": get_total_cards_without_images(),
         "average_cards_per_topic": get_average_cards_per_topic(),
         "largest_topic_card_count": get_largest_topic_card_count(),
         "top_topics": get_top_topics(),
