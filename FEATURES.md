@@ -110,7 +110,6 @@ Each subject can contain multiple topics.
 * Topic icons
 
 ---
-
 # Chapter 4: Card Management ✅
 
 ## Purpose
@@ -123,21 +122,41 @@ Each card belongs to a specific topic.
 
 ### Question
 
-* Question text
-* Optional question image
+Rich content supporting:
+
+* Text
+* Bold formatting
+* Italic formatting
+* Underline formatting
+* Font size controls
+* Bullet lists
+* Numbered lists
+* Embedded images
 
 ### Answer
 
-* Answer text
-* Optional answer image
+Rich content supporting:
+
+* Text
+* Bold formatting
+* Italic formatting
+* Underline formatting
+* Font size controls
+* Bullet lists
+* Numbered lists
+* Embedded images
 
 ## Implemented
 
 * Card CRUD
 * Reusable CardDialog
+* Rich text editor
+* Embedded image support
 * Card list panel
 * Card preview panel
 * Context menu actions
+* HTML content rendering
+* Rich text persistence
 
 ## Future Possibilities
 
@@ -146,6 +165,10 @@ Each card belongs to a specific topic.
 * Notes
 * References
 * External links
+* Text highlighting
+* Code blocks
+* Drag-and-drop images
+* Clipboard image paste
 
 ---
 
@@ -213,12 +236,11 @@ User chooses:
 * Statistics System
 
 ---
-
-# Chapter 6: Image Support ✅
+# Chapter 6: Embedded Image Support ✅
 
 ## Purpose
 
-Allow visual learning.
+Allow visual learning directly inside card content.
 
 ## Supported Formats
 
@@ -230,19 +252,31 @@ Allow visual learning.
 
 ## Implemented
 
-* Image selection in Card Dialog
+* Embedded images inside questions
+* Embedded images inside answers
 * Local image storage
-* SQLite image path persistence
-* Card Preview image display
-* Review Mode image display
-* Reusable ImageViewer widget
+* Rich text and image integration
+* Image rendering in Card Preview
+* Image rendering in Review Mode
 * SVG support
+* Automatic image scaling
+* High-quality image rendering
+
+## Benefits
+
+* Images stay attached to content
+* No separate image fields
+* Cleaner card structure
+* Richer learning material
+* More flexible note creation
 
 ## Future Possibilities
 
-* Multiple images per card
-* Image zoom
-* Drag-and-drop image support
+* Drag-and-drop images
+* Clipboard image paste
+* Multiple image layouts
+* Image resizing controls
+* Image alignment controls
 * Full-screen image viewer
 
 ---
@@ -266,16 +300,16 @@ Allow visual learning.
 * created_at
 * updated_at
 
+
 ### Cards
 
 * id
 * topic_id
 * question_text
 * answer_text
-* question_image_path
-* answer_image_path
 * created_at
 * updated_at
+
 
 ### Review History
 
@@ -365,8 +399,7 @@ Provide insight into collection growth and learning activity.
 * Total subjects
 * Total topics
 * Total cards
-* Cards with images
-* Cards without images
+
 
 ## Organization Statistics
 
@@ -461,6 +494,22 @@ RecallForge is designed to be:
 * Cleaner panel organization
 * Reusable statistics sections
 
+### Rich Text Editor
+
+Implemented
+
+* Bold formatting
+* Italic formatting
+* Underline formatting
+* Font size controls
+* Bullet lists
+* Numbered lists
+* Embedded images
+* HTML content rendering
+* Rich text preview
+* Rich text review mode
+
+
 ### Appearance
 
 * Application branding
@@ -539,21 +588,31 @@ RecallForge Structure
 
 Subject
 └── Topic
-    └── Card
-        ├── Question
-        ├── Question Image (Optional)
-        ├── Answer
-        └── Answer Image (Optional)
+└── Card
+├── Rich Question Content
+│   ├── Text
+│   ├── Formatting
+│   ├── Lists
+│   └── Embedded Images
+│
+└── Rich Answer Content
+├── Text
+├── Formatting
+├── Lists
+└── Embedded Images
 
-        ↓
+```
+    ↓
+```
 
 Review History
-        ↓
+↓
 
 Learning Engine
-        ↓
+↓
 
 Statistics System
+
 
 ---
 
@@ -678,6 +737,9 @@ RecallForge
 14. Dark Mode ✔
 15. Theme Persistence ✔
 16. Application Branding ✔
+17. Rich Text Editor ✔
+18. Embedded Images ✔
+
 
 ## Remaining
 
@@ -762,7 +824,9 @@ RecallForge currently provides:
 * Subject management
 * Topic management
 * Card management
-* Image-enhanced flashcards
+* Rich-text flashcards
+* Embedded image support
+
 
 ### Learning
 
@@ -802,15 +866,18 @@ RecallForge is a fully offline desktop flashcard application focused on creating
 The application now includes:
 
 * Complete CRUD functionality
+* Rich Text Editor
+* Embedded Images
 * Review Mode
 * Review History
 * Learning Engine
 * Collection Statistics
 * Learning Statistics
-* Import / Export
+* Import /Export
 * Dark Mode
 * Persistent User Preferences
 * Application Branding
+
 
 RecallForge remains:
 

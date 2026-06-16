@@ -6,7 +6,8 @@
 
 # RecallForge
 
-RecallForge is a local-first desktop flashcard learning application designed for organizing, reviewing, and retaining knowledge through a simple hierarchy of subjects, topics, and cards.
+RecallForge is a local-first desktop flashcard learning application for organizing, reviewing, and retaining knowledge through a hierarchy of subjects, topics, and rich-text flashcards.
+Cards support formatting, lists, and embedded images, allowing users to build visually rich learning material while keeping all data private and fully offline.
 
 Built with Python, PySide6, and SQLite.
 
@@ -35,8 +36,17 @@ Built with Python, PySide6, and SQLite.
 * Create flashcards
 * Edit flashcards
 * Delete flashcards
-* Question and answer format
+* Rich-text question editor
+* Rich-text answer editor
+* Bold formatting
+* Italic formatting
+* Underline formatting
+* Font size controls
+* Bullet lists
+* Numbered lists
+* Embedded images
 * Topic-based organization
+
 
 ---
 
@@ -81,7 +91,7 @@ Learn at your own pace.
 
 ### Visual Learning
 
-✔ Image Support
+✔ Embedded Image Support
 
 Supported formats:
 
@@ -93,11 +103,14 @@ Supported formats:
 
 Features:
 
-* Question images
-* Answer images
-* Card preview images
-* Review mode image display
+* Embedded images inside questions
+* Embedded images inside answers
+* Rich text and images together
+* Card preview rendering
+* Review mode rendering
 * SVG rendering support
+* Local image storage
+
 
 ---
 
@@ -115,6 +128,7 @@ Search through:
 Features:
 
 * Real-time search
+* Rich-text content search
 * Case-insensitive matching
 * Unified search results
 
@@ -127,8 +141,7 @@ Features:
 * Total subjects
 * Total topics
 * Total cards
-* Cards with images
-* Cards without images
+
 
 ✔ Review Statistics
 
@@ -153,16 +166,36 @@ Features:
 * Backup collections
 * Transfer knowledge bases
 * Preserve structure
+* Preserve rich-text formatting
+* Preserve embedded images
 
 ✔ JSON Import
 
 * Restore backups
 * Import collections
 * Validation and safety checks
+* Restore rich-text formatting
+* Restore embedded images
 
 ---
 
 ### User Experience
+
+✔ Rich Text Editor
+
+* Bold formatting
+* Italic formatting
+* Underline formatting
+* Font size controls
+* Bullet lists
+* Numbered lists
+* Embedded images
+* Rich text preview
+* Rich text review mode
+
+✔ Scrollable Card Preview
+
+✔ Scrollable Review Mode
 
 ✔ Dark Mode
 
@@ -214,11 +247,12 @@ python3 main.py
 
 1. Create a subject
 2. Create topics inside the subject
-3. Create flashcards inside topics
-4. Review cards
-5. Build review history
-6. Track learning strength
-7. Analyze statistics
+3. Create rich-text flashcards
+4. Add formatting, lists, and images
+5. Review cards
+6. Build review history
+7. Track learning strength
+8. Analyze statistics
 
 ---
 
@@ -235,6 +269,7 @@ RecallForge/
 │   ├── review/
 │   ├── search/
 │   ├── statistics/
+│   ├── styles/
 │   ├── theme/
 │   ├── utils/
 │   ├── widgets/
@@ -275,9 +310,11 @@ RecallForge follows a simple philosophy:
 * Offline-first
 * User-controlled
 * Privacy-focused
+* Rich-content learning
 * Pressure-free learning
 
 Your knowledge belongs to you.
+
 
 ---
 
@@ -290,7 +327,6 @@ GitHub:
 https://github.com/damir-bubanovic
 
 Project Repository:
-
 https://github.com/damir-bubanovic/RecallForge
 
 ---
