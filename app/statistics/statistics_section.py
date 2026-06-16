@@ -4,6 +4,8 @@ from PySide6.QtWidgets import (
     QLabel,
     QVBoxLayout,
 )
+from app.styles.font_sizes import FONT_SIZE_SECTION_TITLE, font_size_px
+
 
 
 class StatisticsSection(QFrame):
@@ -15,7 +17,9 @@ class StatisticsSection(QFrame):
         main_layout = QVBoxLayout()
 
         title_label = QLabel(title)
-        title_label.setStyleSheet("font-weight: bold; font-size: 14px;")
+        title_label.setStyleSheet(
+            f"font-weight: bold; {font_size_px(FONT_SIZE_SECTION_TITLE)}"
+        )
         main_layout.addWidget(title_label)
 
         grid_layout = QGridLayout()

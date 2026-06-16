@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtSvgWidgets import QSvgWidget
 from PySide6.QtWidgets import QLabel, QHBoxLayout, QTreeWidget, QVBoxLayout, QWidget
+from app.styles.font_sizes import FONT_SIZE_APP_TITLE, font_size_px
 
 from app.hierarchy.hierarchy_loader import (
     ITEM_ID_ROLE,
@@ -21,7 +22,9 @@ class HierarchyPanel(QWidget):
         self.logo.setFixedSize(40, 40)
 
         self.app_title_label = QLabel("RecallForge")
-        self.app_title_label.setStyleSheet("font-size: 20px; font-weight: bold;")
+        self.app_title_label.setStyleSheet(
+            f"{font_size_px(FONT_SIZE_APP_TITLE)} font-weight: bold;"
+        )
 
         self.tree = QTreeWidget()
         self.tree.setHeaderLabel("Subjects / Topics")

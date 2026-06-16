@@ -17,7 +17,7 @@ from app.cards.card_loader import (
 )
 from app.cards.card_menu import open_context_menu
 from app.review.review_dialog import ReviewDialog
-
+from app.styles.font_sizes import FONT_SIZE_PANEL_TITLE, font_size_px
 
 
 class CardPanel(QWidget):
@@ -30,7 +30,9 @@ class CardPanel(QWidget):
         self.current_topic_name = None
 
         self.title_label = QLabel("Cards")
-        self.title_label.setStyleSheet("font-size: 22px; font-weight: bold;")
+        self.title_label.setStyleSheet(
+            f"{font_size_px(FONT_SIZE_PANEL_TITLE)} font-weight: bold;"
+        )
 
         self.help_label = QLabel("Select a topic to manage cards.")
 

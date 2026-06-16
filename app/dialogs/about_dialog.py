@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.utils.paths import get_asset_path
+from app.styles.font_sizes import FONT_SIZE_PANEL_TITLE, font_size_px
 
 
 class AboutDialog(QDialog):
@@ -37,7 +38,7 @@ class AboutDialog(QDialog):
         title = QLabel("RecallForge")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet(
-            "font-size: 22px; font-weight: bold;"
+            f"{font_size_px(FONT_SIZE_PANEL_TITLE)} font-weight: bold;"
         )
 
         version = QLabel("Version 0.1")
